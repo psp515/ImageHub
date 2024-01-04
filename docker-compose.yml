@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   imagehub.api:
-    image: ${DOCKER_REGISTRY-}imagehubapi
+    image: imagehubapi
     container_name: Api
     build:
       context: .
