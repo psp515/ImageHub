@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  imagehub.api:
+    image: ${DOCKER_REGISTRY-}imagehubapi
+    container_name: Api
+    build:
+      context: .
+      dockerfile: src\ImageHub.Api\Dockerfile
+  imagehub.database:
+    image: postgres:latest
+    container_name: Database
+    environment:
+      - POSTGRES_DB=imagehub-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    build:
+      context: .
+      dockerfile: src\ImageHub.Api\Dockerfile
