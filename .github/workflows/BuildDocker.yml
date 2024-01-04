@@ -1,0 +1,31 @@
+name: Build Docker Containers
+
+on:  
+  pull_request:
+    branches:
+    - development
+  push:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: windows-latest  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x' 
+      
+      - name: Create Images
+        run: docker compose build --no-cache
+      
+      - name: Create Containers
+        run: docker compose up -d
+
+      - name: Teardown Application
+        run: docker compose stop
