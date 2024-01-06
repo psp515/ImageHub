@@ -1,0 +1,38 @@
+name: Build Dotnet Solution
+
+on:  
+  pull_request:
+    branches:
+    - development
+  push:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x' 
+
+      - name: Restore Api NuGet packages
+        run: dotnet restore src/ImageHub.Api/ImageHub.Api.csproj 
+
+      - name: Build Api
+        run: dotnet build src/ImageHub.Api/ImageHub.Api.csproj 
+
+      - name: Restore Api Tests NuGet packages
+        run: dotnet restore src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
+
+      - name: Build Api Tests
+        run: dotnet build src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
+
+      - name: Run Api Tests
+        run: dotnet test src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
+
