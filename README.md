@@ -57,3 +57,4 @@ Project aim is not to create personal accounts.
 TBA:
 - VSA Conclusions
 - SignalR Conclusions
+- Pros and Cons of Monolithic solution

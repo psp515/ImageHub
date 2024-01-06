@@ -10,7 +10,6 @@ public class ImagePack
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
-
     public IList<Image> Images { get; set; } = new List<Image>();
 
     public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;

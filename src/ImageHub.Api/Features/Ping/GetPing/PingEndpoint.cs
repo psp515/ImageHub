@@ -4,7 +4,7 @@ public class PingEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("ping/{name}", async (string name, ISender service) =>
+        app.MapGet("api/ping/{name}", async (string name, ISender service) =>
         {
             var query = new PingQuery { Name = name };
 
