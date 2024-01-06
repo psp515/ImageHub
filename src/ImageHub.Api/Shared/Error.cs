@@ -2,5 +2,5 @@
 
 public record Error(string Code, string? Description = null)
 {
-    public static Error None => new("nNone");
+    public static Error None => new("None");
 }

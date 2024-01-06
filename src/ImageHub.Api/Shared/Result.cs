@@ -12,6 +12,7 @@ public class Result<T>
 
         IsSuccess = isSuccess;
         Error = error;
+        Value = default!;
     }
 
     private Result(bool isSuccess, Error error, T value)
