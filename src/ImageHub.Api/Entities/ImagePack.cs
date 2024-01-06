@@ -2,7 +2,7 @@
 
 namespace ImageHub.Api.Entities;
 
-public class ImageGroup
+public class ImagePack
 {
     [Key]
     public Guid Id { get; set; }

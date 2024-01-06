@@ -13,7 +13,7 @@ public class Image
     public string FileExtension { get; set; } = string.Empty;
     public decimal Size { get; set; }
 
-    public ImageGroup? Group { get; set; } 
+    public ImagePack? Group { get; set; } 
 
     public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
     public DateTime EditedAtUtc { get; set; } = DateTime.UtcNow;
