@@ -3,16 +3,10 @@ using ImageHub.Api.Infrastructure.Repositories;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
-public class AddImagePackHandler : IRequestHandler<AddImagePackCommand, Result<Guid>>
+public class AddImagePackHandler(IImagePackRepository repository, IValidator<AddImagePackCommand> validator) : IRequestHandler<AddImagePackCommand, Result<Guid>>
 {
-    private readonly IImagePackRepository _repository;
-    private readonly IValidator<AddImagePackCommand> _validator;
-
-    public AddImagePackHandler(IImagePackRepository repository, IValidator<AddImagePackCommand> validator)
-    {
-        _repository = repository;
-        _validator = validator;
-    }
+    private readonly IImagePackRepository _repository = repository;
+    private readonly IValidator<AddImagePackCommand> _validator = validator;
 
     public async Task<Result<Guid>> Handle(AddImagePackCommand request, CancellationToken cancellationToken)
     {

@@ -13,6 +13,16 @@ public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRep
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task EditImagePack(ImagePack imagePack, CancellationToken cancellationToken)
+    { 
+        
+    }
+
+    public async Task GetImagePack(ImagePack imagePack, CancellationToken cancellationToken)
+    {
+        
+    }
+
     public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken)
     {
         return await _dbContext.ImagePacks
