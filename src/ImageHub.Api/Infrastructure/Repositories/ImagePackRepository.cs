@@ -3,14 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageHub.Api.Infrastructure.Repositories;
 
-public class ImagePackRepository : IImagePackRepository
+public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public ImagePackRepository(ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly ApplicationDbContext _dbContext = dbContext;
 
     public async Task AddImagePack(ImagePack imagePack, CancellationToken cancellationToken)
     {
@@ -23,4 +18,10 @@ public class ImagePackRepository : IImagePackRepository
         return await _dbContext.ImagePacks
             .AnyAsync(x => x.Name == name, cancellationToken);
     }
+
+    public async Task<ImagePack?> GetImagePackByIdAsync(Guid id, CancellationToken cancellationToken) 
+        => await _dbContext.ImagePacks.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+    public async Task<List<ImagePack>> GetImagePacksAsync(CancellationToken cancellationToken)
+        => await _dbContext.ImagePacks.ToListAsync(cancellationToken);
 }
