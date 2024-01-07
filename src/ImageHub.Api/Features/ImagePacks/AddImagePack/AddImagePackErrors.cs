@@ -7,5 +7,8 @@ namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 public class AddImagePackErrors
 {
     public static Error ValidationFailed(ValidationResult result) 
-        => new("ImagePack.Add", result.ToString());
+        => new("ImagePack.Add.Validation", result.ToString());
+
+    public static Error ImagePackExist
+        => new("ImagePack.Add.Exists");
 }

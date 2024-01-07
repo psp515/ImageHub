@@ -1,5 +1,6 @@
 using FluentValidation;
 using ImageHub.Api.Infrastructure.Persistence;
+using ImageHub.Api.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -17,6 +18,8 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Host.UseSerilog((context, configuration) => 
     configuration.ReadFrom.Configuration(context.Configuration));
+
+builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
 
 var app = builder.Build();
 
