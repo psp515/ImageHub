@@ -2,9 +2,9 @@
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
-public class EditImagePackValidator : AbstractValidator<EditImagePackCommand>
+public class UpdateImagePackValidator : AbstractValidator<UpdateImagePackCommand>
 {
-    public EditImagePackValidator()
+    public UpdateImagePackValidator()
     {
         RuleFor(x => x.Description)
             .MaximumLength(500);

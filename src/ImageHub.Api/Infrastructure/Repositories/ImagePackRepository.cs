@@ -7,20 +7,16 @@ public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRep
 {
     private readonly ApplicationDbContext _dbContext = dbContext;
 
-    public async Task AddImagePack(ImagePack imagePack, CancellationToken cancellationToken)
+    public async Task<bool> AddImagePack(ImagePack imagePack, CancellationToken cancellationToken)
     {
         _dbContext.Add(imagePack);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task EditImagePack(ImagePack imagePack, CancellationToken cancellationToken)
+    public async Task<bool> UpdateImagePack(ImagePack imagePack, CancellationToken cancellationToken)
     { 
-        
-    }
-
-    public async Task GetImagePack(ImagePack imagePack, CancellationToken cancellationToken)
-    {
-        
+        _dbContext.Update(imagePack);
+        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
     public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken)
@@ -34,4 +30,10 @@ public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRep
 
     public async Task<List<ImagePack>> GetImagePacksAsync(CancellationToken cancellationToken)
         => await _dbContext.ImagePacks.ToListAsync(cancellationToken);
+
+    public async Task<bool> DeleteImagePack(ImagePack imagePack, CancellationToken cancellationToken)
+    {
+        _dbContext.Remove(imagePack);
+        return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
+    }
 }

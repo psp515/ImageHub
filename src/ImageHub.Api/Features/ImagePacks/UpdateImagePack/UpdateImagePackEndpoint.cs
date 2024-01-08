@@ -1,15 +1,14 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks;
-using Mapster;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
-public class EditImagePackEndpoint : ICarterModule
+public class UpdateImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/imagepack/{id}", async (Guid id, EditImagePackRequest request, ISender sender) =>
+        app.MapPatch("/api/imagepack/{id}", async (Guid id, UpdateImagePackRequest request, ISender sender) =>
         {
-            var command = new EditImagePackCommand
+            var command = new UpdateImagePackCommand
             {
                 Id = id,
                 Description = request.Description,
