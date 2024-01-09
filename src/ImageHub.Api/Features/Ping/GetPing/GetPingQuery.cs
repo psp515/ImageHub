@@ -1,6 +1,6 @@
 ﻿namespace ImageHub.Api.Features.Ping.Get;
 
-public class PingQuery : IRequest<Result<PingResponse>>
+public class GetPingQuery : IRequest<Result<GetPingResponse>>
 {
     public string Name { get; set; } = string.Empty;
 }

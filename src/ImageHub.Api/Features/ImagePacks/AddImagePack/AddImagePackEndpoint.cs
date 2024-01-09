@@ -1,4 +1,5 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks;
+using ImageHub.Api.Extensions;
 using Mapster;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
@@ -15,7 +16,7 @@ public class AddImagePackEndpoint : ICarterModule
 
             if (result.IsFailure)
             {
-                return Results.BadRequest(result.Error);
+                return result.ToResultsDetails();
             }
 
             var response = new AddImagePackResponse(result.Value);

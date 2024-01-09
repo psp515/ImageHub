@@ -1,4 +1,5 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks;
+using ImageHub.Api.Extensions;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
@@ -16,12 +17,7 @@ public class UpdateImagePackEndpoint : ICarterModule
 
             var result = await sender.Send(command);
 
-            if (result.IsFailure)
-            {
-                return Results.BadRequest(result.Error);
-            }
-
-            return Results.NoContent();
+            return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
         });
     }
 }

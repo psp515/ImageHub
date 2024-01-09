@@ -1,4 +1,6 @@
 ﻿
+using ImageHub.Api.Extensions;
+
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 
 public class GetImagePacksEndpoiont : ICarterModule
@@ -11,7 +13,7 @@ public class GetImagePacksEndpoiont : ICarterModule
 
             var result = await service.Send(query);
 
-            return Results.Ok(result);
+            return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
         });
     }
 }

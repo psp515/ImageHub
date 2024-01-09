@@ -5,9 +5,8 @@ namespace ImageHub.Api.Features.ImagePacks.DeleteImagePack;
 public class DeleteImagePackErrors
 {
     public static Error ValidationFailed(ValidationResult validationResult)
-    {
-        return new Error("ImagePack.Delete.Validation", validationResult.ToString());
-    }
-
-    public static Error NotFound => new("ImagePack.Delete.NotFound");
+        => Error.Validation("ImagePack.Delete.Validation", validationResult.ToString());
+    
+    public static Error NotFound 
+        => Error.NotFound("ImagePack.Delete.NotFound");
 }
