@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
 
 namespace ImageHub.Api.Tests.Features;
 
-internal class ImagePackIntegrationTests
+public class ImagePackIntegrationTests : IClassFixture<ApiFactory>
 {
+    readonly HttpClient _client;
+
+    public ImagePackIntegrationTests(ApiFactory application)
+    {
+        _client = application.CreateClient();
+    }
 }
