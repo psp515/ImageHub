@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ImageHub.Api.Tests;
 
@@ -45,10 +46,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     public async Task InitializeAsync()
     {
         await postgresFixture.InitializeAsync();
-
-  
-
-        ConnectionString = $"Host={postgresFixture.Container.IpAddress};Port={postgresFixture.Container.GetMappedPublicPort(5432)};Database=imagehub-db;Username=postgres;Password=postgres";// postgresFixture.Container.GetConnectionString();
+        ConnectionString = postgresFixture.Container.GetConnectionString();
 
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

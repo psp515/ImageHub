@@ -30,7 +30,12 @@ jobs:
       - name: Test
         run: dotnet test ./ImageHub.sln --no-build
 
+      - name: Docker
+        if: always()
+        run: docker ps
+
       - name: Upload coverage reports to Codecov
+        if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
