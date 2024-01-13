@@ -37,7 +37,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connection));
-        });
+        }).UseEnvironment("Development");
     }
 
     public Task InitializeAsync()

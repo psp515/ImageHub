@@ -23,16 +23,17 @@ builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
 app.MapCarter();
-
 app.Run();
 
 public partial class Program { }
