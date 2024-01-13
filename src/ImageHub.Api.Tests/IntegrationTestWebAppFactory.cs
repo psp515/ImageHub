@@ -1,22 +1,37 @@
 ﻿using ImageHub.Api.Infrastructure.Persistence;
+using Mapster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.InteropServices;
 using Testcontainers.PostgreSql;
 
 namespace ImageHub.Api.Tests;
 
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
+public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
-        .WithPassword("postgres")
-        .WithUsername("postgres")
-        .WithDatabase("imagehub")
-        .WithExposedPort(5432)
-        .Build();
+    private const string UnixSocketAddr = "unix:/var/run/docker.sock";
+
+    private static PostgreSqlContainer _dbContainer
+    {
+        get
+        {
+            var builder = new PostgreSqlBuilder()
+                .WithImage("postgres:latest")
+                .WithPassword("postgres")
+                .WithUsername("postgres")
+                .WithDatabase("imagehub");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                builder.WithDockerEndpoint(UnixSocketAddr);
+            }
+
+            return builder.Build();
+        }
+    }
 
     protected override async void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -32,12 +47,12 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
 
             if (descriptor is not null)
                 services.Remove(descriptor);
-            
+
             var connection = _dbContainer.GetConnectionString();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connection));
-        }).UseEnvironment("Development");
+        });
     }
 
     public Task InitializeAsync()
