@@ -22,7 +22,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 .WithImage("postgres:latest")
                 .WithPassword("postgres")
                 .WithUsername("postgres")
-                .WithDatabase("imagehub");
+                .WithDatabase("imagehub")
+                .WithCleanUp(true);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -48,10 +49,10 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             if (descriptor is not null)
                 services.Remove(descriptor);
 
-            var connection = _dbContainer.GetConnectionString();
+            var uri = new UriBuilder("tcp", _dbContainer.Hostname, _dbContainer.GetMappedPublicPort(5432));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(connection));
+                options.UseNpgsql(uri.ToString()));
         });
     }
 
