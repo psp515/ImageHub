@@ -39,6 +39,16 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     {
         await _dbContainer.StartAsync();
 
+        if (_dbContainer.State != DotNet.Testcontainers.Containers.TestcontainersStates.Running)
+        {
+            throw new InvalidOperationException("PostgreSQL container is not running.");
+        }
+
+        if(_dbContainer.Health != DotNet.Testcontainers.Containers.TestcontainersHealthStatus.Healthy)
+        {
+            throw new InvalidOperationException("PostgreSQL container is not healthy.");
+        }
+
         builder.ConfigureTestServices(services =>
         {
             var descriptorType =
@@ -50,10 +60,10 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             if (descriptor is not null)
                 services.Remove(descriptor);
 
-            var uri = new UriBuilder("tcp", _dbContainer.Hostname, _dbContainer.GetMappedPublicPort(5432));
+            var connectionString = $"Host={_dbContainer.Hostname};Port={_dbContainer.GetMappedPublicPort(5432)};Database=imagehub-db;Username=postgres;Password=postgres";
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(uri.ToString()));
+                options.UseNpgsql(connectionString));
         });
     }
 
