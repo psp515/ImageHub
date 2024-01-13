@@ -14,24 +14,31 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 {
     private const string UnixSocketAddr = "unix:/var/run/docker.sock";
 
+    private static PostgreSqlContainer _instance;
+
     private static PostgreSqlContainer _dbContainer
     {
         get
         {
-            var builder = new PostgreSqlBuilder()
-                .WithImage("postgres:latest")
-                .WithPassword("postgres")
-                .WithUsername("postgres")
-                .WithDatabase("imagehub-db")
-                .WithPortBinding(5432, true)
-                .WithCleanUp(true);
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            if (_instance is null)
             {
-                builder.WithDockerEndpoint(UnixSocketAddr);
+                var builder = new PostgreSqlBuilder()
+                    .WithPortBinding(5432, true)
+                    .WithImage("postgres:latest")
+                    .WithPassword("postgres")
+                    .WithUsername("postgres")
+                    .WithDatabase("imagehub-db")
+                    .WithCleanUp(true);
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    builder.WithDockerEndpoint(UnixSocketAddr);
+                }
+
+                return builder.Build();
             }
 
-            return builder.Build();
+            return _instance;
         }
     }
 
@@ -44,7 +51,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             throw new InvalidOperationException("PostgreSQL container is not running.");
         }
 
-        if(_dbContainer.Health != DotNet.Testcontainers.Containers.TestcontainersHealthStatus.Healthy)
+        if (_dbContainer.Health != DotNet.Testcontainers.Containers.TestcontainersHealthStatus.Healthy)
         {
             throw new InvalidOperationException("PostgreSQL container is not healthy.");
         }
@@ -61,6 +68,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 services.Remove(descriptor);
 
             var connectionString = $"Host={_dbContainer.Hostname};Port={_dbContainer.GetMappedPublicPort(5432)};Database=imagehub-db;Username=postgres;Password=postgres";
+
+            Console.WriteLine(connectionString);
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
