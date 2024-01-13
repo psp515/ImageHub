@@ -22,7 +22,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
                 .WithImage("postgres:latest")
                 .WithPassword("postgres")
                 .WithUsername("postgres")
-                .WithDatabase("imagehub")
+                .WithDatabase("imagehub-db")
+                .WithPortBinding(5432, false)
                 .WithCleanUp(true);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
