@@ -19,8 +19,11 @@
     <a href="https://codecov.io/gh/psp515/ImageHub">
       <img src="https://codecov.io/gh/psp515/ImageHub/graph/badge.svg" alt="coverage" />
     </a>
-    <a href="https://codecov.io/gh/psp515/ImageHub">
+    <a href="https://github.com/psp515/ImageHub/actions/workflows/BuildDotnet.yml">
       <img src="https://github.com/psp515/ImageHub/actions/workflows/BuildDotnet.yml/badge.svg" alt="build" />
+    </a>
+    <a href="https://github.com/psp515/ImageHub/actions/workflows/TestDotnet.yml">
+      <img src="https://github.com/psp515/ImageHub/actions/workflows/TestDotnet.yml/badge.svg" alt="test" />
     </a>
   </div>
 </div>

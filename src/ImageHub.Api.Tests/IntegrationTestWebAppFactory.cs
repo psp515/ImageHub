@@ -26,11 +26,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             throw new InvalidOperationException("PostgreSQL container is not running.");
         }
 
-        if (postgresFixture.Container.Health != DotNet.Testcontainers.Containers.TestcontainersHealthStatus.Healthy)
-        {
-            //throw new InvalidOperationException("PostgreSQL container is not healthy.");
-        }
-
         builder.ConfigureTestServices(services =>
         {
             var descriptorType =
@@ -42,8 +37,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             if (descriptor is not null)
                 services.Remove(descriptor);
 
-            Console.WriteLine(ConnectionString);
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(ConnectionString));
         });
@@ -52,7 +45,10 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     public async Task InitializeAsync()
     {
         await postgresFixture.InitializeAsync();
-        ConnectionString = postgresFixture.Container.GetConnectionString();
+
+  
+
+        ConnectionString = $"Host={postgresFixture.Container.IpAddress};Port={postgresFixture.Container.GetMappedPublicPort(5432)};Database=imagehub-db;Username=postgres;Password=postgres";// postgresFixture.Container.GetConnectionString();
 
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
