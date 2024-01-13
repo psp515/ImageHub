@@ -22,13 +22,13 @@ jobs:
           dotnet-version: '8.x' 
 
       - name: Restore
-        run: dotnet restore ./Products.Api.sln
+        run: dotnet restore ./ImageHub.sln
 
       - name: Build
-        run: dotnet build ./Products.Api.sln --no-restore
+        run: dotnet build ./ImageHub.sln --no-restore
 
       - name: Test
-        run: dotnet test ./Products.Api.sln --no-build
+        run: dotnet test ./ImageHub.sln --no-build
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
