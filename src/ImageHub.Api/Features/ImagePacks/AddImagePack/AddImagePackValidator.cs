@@ -8,7 +8,7 @@ public class AddImagePackValidator : AbstractValidator<AddImagePackCommand>
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .MaximumLength(30);
+            .MaximumLength(50);
 
         RuleFor(x => x.Description)
             .MaximumLength(500);

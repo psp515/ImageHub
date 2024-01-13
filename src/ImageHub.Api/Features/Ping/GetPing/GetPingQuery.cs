@@ -1,4 +1,6 @@
-﻿namespace ImageHub.Api.Features.Ping.Get;
+﻿using ImageHub.Api.Contracts.Ping.GetPing;
+
+namespace ImageHub.Api.Features.Ping.Get;
 
 public class GetPingQuery : IRequest<Result<GetPingResponse>>
 {

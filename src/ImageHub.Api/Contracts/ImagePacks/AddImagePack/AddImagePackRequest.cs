@@ -1,4 +1,4 @@
-﻿namespace ImageHub.Api.Contracts.ImagePacks;
+﻿namespace ImageHub.Api.Contracts.ImagePacks.AddImagePack;
 
 public class AddImagePackRequest
 {

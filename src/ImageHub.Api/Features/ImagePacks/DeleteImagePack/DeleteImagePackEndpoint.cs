@@ -6,13 +6,13 @@ public class DeleteImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/imagepack/{id}", async (Guid id, ISender sender) =>
+        app.MapDelete("/api/imagepacks/{id}", async (Guid id, ISender sender) =>
         {
             var command = new DeleteImagePackCommand { Id = id };
 
             var result = await sender.Send(command);
 
             return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
-        });
+        }).WithTags(ImagePacksExtensions.Name);
     }
 }

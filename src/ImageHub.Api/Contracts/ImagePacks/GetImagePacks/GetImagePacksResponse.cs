@@ -1,4 +1,4 @@
-﻿namespace ImageHub.Api.Features.ImagePacks.GetImagePacks;
+﻿namespace ImageHub.Api.Contracts.ImagePacks.GetImagePacks;
 
 public class GetImagePacksResponse
 {

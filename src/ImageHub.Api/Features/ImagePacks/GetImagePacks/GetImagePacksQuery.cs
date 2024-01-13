@@ -1,5 +1,5 @@
 ﻿
-using ImageHub.Api.Features.ImagePacks.GetImagePacks;
+using ImageHub.Api.Contracts.ImagePacks.GetImagePacks;
 
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 

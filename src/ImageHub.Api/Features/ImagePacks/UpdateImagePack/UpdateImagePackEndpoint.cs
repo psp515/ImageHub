@@ -1,4 +1,4 @@
-﻿using ImageHub.Api.Contracts.ImagePacks;
+﻿using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
 using ImageHub.Api.Extensions;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
@@ -7,7 +7,7 @@ public class UpdateImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPatch("/api/imagepack/{id}", async (Guid id, UpdateImagePackRequest request, ISender sender) =>
+        app.MapPatch("/api/imagepacks/{id}", async (Guid id, UpdateImagePackRequest request, ISender sender) =>
         {
             var command = new UpdateImagePackCommand
             {
@@ -18,6 +18,6 @@ public class UpdateImagePackEndpoint : ICarterModule
             var result = await sender.Send(command);
 
             return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
-        });
+        }).WithTags(ImagePacksExtensions.Name);
     }
 }

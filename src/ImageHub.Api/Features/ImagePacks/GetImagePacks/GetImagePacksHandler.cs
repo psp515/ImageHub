@@ -1,4 +1,4 @@
-﻿using ImageHub.Api.Features.ImagePacks.GetImagePacks;
+﻿using ImageHub.Api.Contracts.ImagePacks.GetImagePacks;
 using ImageHub.Api.Infrastructure.Repositories;
 using Mapster;
 

@@ -1,4 +1,4 @@
-﻿using ImageHub.Api.Contracts.ImagePacks;
+﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
 using ImageHub.Api.Extensions;
 using Mapster;
 
@@ -8,7 +8,7 @@ public class AddImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/imagepack", async (AddImagePackRequest request, ISender sender) =>
+        app.MapPost("/api/imagepacks", async (AddImagePackRequest request, ISender sender) =>
         {
             var command = request.Adapt<AddImagePackCommand>();
 
@@ -22,6 +22,6 @@ public class AddImagePackEndpoint : ICarterModule
             var response = new AddImagePackResponse(result.Value);
 
             return Results.Created($"/api/imagepack/{result.Value}", response);
-        });
+        }).WithTags(ImagePacksExtensions.Name);
     }
 }

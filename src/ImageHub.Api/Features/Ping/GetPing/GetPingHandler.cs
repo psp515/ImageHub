@@ -1,4 +1,5 @@
-﻿using ImageHub.Api.Features.Ping.Get;
+﻿using ImageHub.Api.Contracts.Ping.GetPing;
+using ImageHub.Api.Features.Ping.Get;
 
 namespace ImageHub.Api.Features.Ping.GetPing;
 

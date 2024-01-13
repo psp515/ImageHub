@@ -13,7 +13,7 @@ public class GetImagePacksEndpoiont : ICarterModule
 
             var result = await service.Send(query);
 
-            return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
-        });
+            return result.IsSuccess ? Results.Ok(result.Value) : result.ToResultsDetails();
+        }).WithTags(ImagePacksExtensions.Name);
     }
 }

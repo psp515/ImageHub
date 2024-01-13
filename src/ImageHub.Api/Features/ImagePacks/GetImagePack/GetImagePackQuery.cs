@@ -1,4 +1,6 @@
-﻿namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
+﻿using ImageHub.Api.Contracts.ImagePacks.GetImagePack;
+
+namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 
 public class GetImagePackQuery : IRequest<Result<GetImagePackResponse>>
 {

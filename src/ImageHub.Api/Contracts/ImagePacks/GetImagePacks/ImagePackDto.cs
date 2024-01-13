@@ -1,6 +1,6 @@
-﻿namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
+﻿namespace ImageHub.Api.Contracts.ImagePacks.GetImagePacks;
 
-public class GetImagePackResponse
+public class ImagePackDto
 {
     public Guid Id { get; set; }
 

@@ -1,10 +1,10 @@
 ﻿using System.Net;
 
-namespace ImageHub.Api.Tests.Features;
+namespace ImageHub.Api.Tests.Features.Ping;
 
 public class GetPingIntegrationTests : IClassFixture<ApiFactory>
 {
-    readonly HttpClient _client;
+    private readonly HttpClient _client;
 
     public GetPingIntegrationTests(ApiFactory application)
     {
@@ -12,7 +12,7 @@ public class GetPingIntegrationTests : IClassFixture<ApiFactory>
     }
 
     [Fact]
-    public async Task GET_retrieves_weather_forecast()
+    public async Task CandPingEndpoint()
     {
         var response = await _client.GetAsync("/api/ping/psp515");
 
