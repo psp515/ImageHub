@@ -11,7 +11,11 @@ namespace ImageHub.Api.Tests;
 public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:latest")
         .WithPassword("postgres")
+        .WithUsername("postgres")
+        .WithDatabase("imagehub")
+        .WithExposedPort(5432)
         .Build();
 
     protected override async void ConfigureWebHost(IWebHostBuilder builder)
