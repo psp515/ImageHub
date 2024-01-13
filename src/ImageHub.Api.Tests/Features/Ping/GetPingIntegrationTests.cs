@@ -2,20 +2,17 @@
 
 namespace ImageHub.Api.Tests.Features.Ping;
 
-public class GetPingIntegrationTests : IClassFixture<ApiFactory>
+public class GetPingIntegrationTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
-    private readonly HttpClient _client;
-
-    public GetPingIntegrationTests(ApiFactory application)
-    {
-        _client = application.CreateClient();
-    }
-
     [Fact]
     public async Task CandPingEndpoint()
     {
+        //Arrange
+
+        //Act
         var response = await _client.GetAsync("/api/ping/psp515");
 
+        //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

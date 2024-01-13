@@ -37,4 +37,8 @@
 		<None Include="C:\Users\psp515\Documents\GitHub\ImageHub\src\ImageHub.Api\.editorconfig" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Logs\" />
+	</ItemGroup>
+
 </Project>

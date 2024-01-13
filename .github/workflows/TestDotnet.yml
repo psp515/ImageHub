@@ -1,0 +1,36 @@
+name: Test Dotnet Solution
+
+on:  
+  pull_request:
+    branches:
+    - development
+  push:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x' 
+
+      - name: Restore
+        run: dotnet restore ./Products.Api.sln
+
+      - name: Build
+        run: dotnet build ./Products.Api.sln --no-restore
+
+      - name: Test
+        run: dotnet test ./Products.Api.sln --no-build
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

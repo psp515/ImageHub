@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ImageHub.Api.Tests.Features.ImagePack;
+namespace ImageHub.Api.Tests.Features.ImagePack.Models;
 
 public class ImagePackDto
 {
