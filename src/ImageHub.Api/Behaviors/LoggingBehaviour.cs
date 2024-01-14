@@ -7,10 +7,10 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var requestId = Guid.NewGuid();
+        var logId = Guid.NewGuid();
 
-        logger.LogInformation("Request Id: {requestId}, Request Type: {@RequestName}, Time: {@DateTimeUtc}, Started processing.",
-                requestId,
+        logger.LogInformation("Logging Id: {@LogId}, Request Type: {@RequestName}, Time: {@DateTimeUtc}, Started processing.",
+                logId,
                 typeof(TRequest).Name,
                 DateTime.UtcNow);
 
@@ -18,8 +18,8 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
 
         if (response.IsFailure)
         {
-            logger.LogError("Request Id: {requestId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with error {@Error}",
-                requestId,
+            logger.LogError("Logging Id: {@LogId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with error {@Error}",
+                logId,
                 typeof(TRequest).Name,
                 DateTime.UtcNow,
                 response.Error);
@@ -27,8 +27,8 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
             return response;
         }
 
-        logger.LogInformation("Request Id: {requestId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with success",
-            requestId,
+        logger.LogInformation("Logging Id: {@LogId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with success",
+            logId,
             typeof(TRequest).Name,
             DateTime.UtcNow);
 

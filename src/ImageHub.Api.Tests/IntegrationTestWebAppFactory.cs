@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace ImageHub.Api.Tests;
 
@@ -14,11 +15,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        if (postgresFixture.Container.State != DotNet.Testcontainers.Containers.TestcontainersStates.Running)
-        {
-            throw new InvalidOperationException("PostgreSQL container is not running.");
-        }
-
         builder.ConfigureTestServices(services =>
         {
             var descriptorType =
@@ -42,12 +38,17 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.MigrateAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+
+        if (postgresFixture.Container.State != DotNet.Testcontainers.Containers.TestcontainersStates.Running)
+        {
+            throw new InvalidOperationException("PostgreSQL container is not running.");
+        }
     }
+
 
     public new Task DisposeAsync()
     {
-        return postgresFixture.DisposeAsync();
+        return Task.CompletedTask;
     }
-
 }
