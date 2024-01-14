@@ -1,4 +1,6 @@
 using FluentValidation;
+using ImageHub.Api.Behaviors;
+using ImageHub.Api.Features.ImagePacks;
 using ImageHub.Api.Infrastructure.Persistence;
 using ImageHub.Api.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,10 @@ builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
+
+builder.Services.AddScoped(
+    typeof(IPipelineBehavior<,>), 
+    typeof(LoggingBehaviour<,>));
 
 var app = builder.Build();
 

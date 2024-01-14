@@ -1,5 +1,4 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks.GetImagePack;
-using ImageHub.Api.Infrastructure.Repositories;
 
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 

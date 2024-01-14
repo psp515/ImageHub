@@ -1,5 +1,4 @@
-﻿
-namespace ImageHub.Api.Infrastructure.Repositories;
+﻿namespace ImageHub.Api.Features.ImagePacks;
 
 public interface IImagePackRepository
 {

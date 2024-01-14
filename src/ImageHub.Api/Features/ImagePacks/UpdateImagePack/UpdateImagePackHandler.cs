@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using ImageHub.Api.Infrastructure.Repositories;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 

@@ -27,14 +27,14 @@ public class PostgreSqlContainerFixture : IAsyncLifetime
         Container = builder.Build();
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        return Container.StartAsync();
+        await Container.StartAsync();
     }
 
-    public new Task DisposeAsync()
+    public async Task DisposeAsync()
     {
-        return Container.StopAsync();
+        await Container.StopAsync();
     }
 
 }
