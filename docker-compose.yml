@@ -7,6 +7,10 @@ services:
     build:
       context: .
       dockerfile: src\ImageHub.Api\Dockerfile
+    depends_on:
+      imagehub.database:
+        condition: service_healthy
+        restart: true
   imagehub.database:
     image: postgres:latest
     container_name: Database

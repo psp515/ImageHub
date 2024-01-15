@@ -25,14 +25,10 @@ jobs:
         run: dotnet restore src/ImageHub.Api/ImageHub.Api.csproj 
 
       - name: Build Api
-        run: dotnet build src/ImageHub.Api/ImageHub.Api.csproj 
+        run: dotnet build src/ImageHub.Api/ImageHub.Api.csproj --no-restore
 
       - name: Restore Api Tests NuGet packages
         run: dotnet restore src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
 
       - name: Build Api Tests
-        run: dotnet build src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
-
-      - name: Run Api Tests
-        run: dotnet test src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj 
-
+        run: dotnet build src/ImageHub.Api.Tests/ImageHub.Api.Tests.csproj --no-restore

@@ -1,0 +1,41 @@
+name: Test Dotnet Solution
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+    - development
+  push:
+    branches:
+    - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x' 
+
+      - name: Restore
+        run: dotnet restore ./ImageHub.sln
+
+      - name: Build
+        run: dotnet build ./ImageHub.sln --no-restore /p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: dotnet test ./ImageHub.sln --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+      - name: Docker
+        if: always()
+        run: docker ps
+
+      - name: Upload coverage reports to Codecov
+        if: always()
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
