@@ -1,4 +1,5 @@
 ﻿using ImageHub.Api.Contracts.Image.AddImage;
+using ImageHub.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.AddImage;
@@ -7,8 +8,7 @@ public class AddImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/images", async (AddImageRequest request, 
-            ISender sender, 
+        app.MapPost("/api/images", async (AddImageRequest request, ISender sender, 
             [FromQuery(Name = "groupId")] string groupId = "") =>
         {
             var command = new AddImageCommand
@@ -20,8 +20,16 @@ public class AddImageEndpoint : ICarterModule
                 Image = request.Image
             };
 
-            var response = await sender.Send(command);
-            return Results.Ok(response);
+            var result = await sender.Send(command);
+
+            if (result.IsFailure)
+                return result.ToResultsDetails();
+
+            var response = new AddImageResponse { 
+                Id = result.Value.Id
+            };
+
+            return Results.Created($"api/images/{result.Value.Id}",response);
         });
     }
 }
