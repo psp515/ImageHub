@@ -10,5 +10,5 @@ public class AddImagePackErrors
         => Error.Validation("ImagePack.Add.Validation", result.ToString());
 
     public static Error ImagePackExist
-        => Error.Conflict("ImagePack.Add.Exists");
+        => Error.Conflict("ImagePack.Add.Name.Exists");
 }
