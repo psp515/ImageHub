@@ -1,4 +1,4 @@
-﻿namespace ImageHub.Api.Features.Images;
+﻿namespace ImageHub.Api.Features.Images.Repositories;
 
 public interface IImageRepository
 {

@@ -1,6 +1,7 @@
 using FluentValidation;
 using ImageHub.Api.Behaviors;
 using ImageHub.Api.Features.ImagePacks;
+using ImageHub.Api.Features.Images.Repositories;
 using ImageHub.Api.Infrastructure;
 using ImageHub.Api.Infrastructure.Persistence;
 using ImageHub.Api.Infrastructure.Repositories;
@@ -19,12 +20,24 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assemb
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddAntiforgery();
 
 builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageStoreRepository, FileRepository>();
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Allow",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
+
 
 var app = builder.Build();
 
@@ -34,8 +47,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("Allow");
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
+app.UseAntiforgery();
 
 app.MapCarter();
 app.Run();

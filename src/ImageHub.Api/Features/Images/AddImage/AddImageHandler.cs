@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ImageHub.Api.Contracts.Image.AddImage;
+using ImageHub.Api.Features.Images.Repositories;
 
 namespace ImageHub.Api.Features.Images.AddImage;
 
@@ -32,7 +33,6 @@ public class AddImageHandler(IImageRepository repository, IValidator<AddImageCom
         };
 
         //TODO : Solve Storage, Solve File Extensions
-
 
         var result = new AddImageResponse
         {

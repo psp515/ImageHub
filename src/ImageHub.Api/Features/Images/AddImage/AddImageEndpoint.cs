@@ -8,7 +8,8 @@ public class AddImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/images", async (AddImageRequest request, ISender sender, 
+        app.MapPost("/api/images", async(ISender sender,
+            [FromForm] AddImageRequest request, 
             [FromQuery(Name = "pack")] string packId = "") =>
         {
             var command = new AddImageCommand
