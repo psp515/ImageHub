@@ -26,10 +26,12 @@ public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken)
-    {
-        return await _dbContext.Images
+    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken) => await _dbContext.Images
             .AnyAsync(x => x.Name == name, cancellationToken: cancellationToken);
+
+    public async Task<Image?> GetImageById(Guid guid, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == guid);
     }
 
     public async Task<Image?> GetImageByImagePackIdAsync(Guid id, CancellationToken cancellationToken) 
@@ -45,4 +47,5 @@ public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
             .Skip((page-1)*pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
+
 }
