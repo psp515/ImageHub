@@ -6,7 +6,7 @@ public class GetAntiforgeryEndpoiont : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/imagepacks/{imagePackId}", async (Guid imagePackId, ISender service) =>
+        app.MapGet("/api/imagepacks/{imagePackId}", async (string imagePackId, ISender service) =>
         {
             var query = new GetImagePackQuery { Id = imagePackId };
 

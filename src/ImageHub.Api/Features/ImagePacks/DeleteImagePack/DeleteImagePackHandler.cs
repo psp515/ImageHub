@@ -17,7 +17,9 @@ public class DeleteImagePackHandler(IImagePackRepository repository, IValidator<
             return Result<Guid>.Failure(error);
         }
 
-        var imagePack = await _repository.GetImagePackById(request.Id, cancellationToken);
+        var guid = Guid.Parse(request.Id);
+
+        var imagePack = await _repository.GetImagePackById(guid, cancellationToken);
 
         if (imagePack is null)
         {

@@ -9,10 +9,9 @@ public class Image
     public Guid Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
-    public string Path { get; set; } = string.Empty;
+    public string ImageStoreKey { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string FileType { get; set; } = string.Empty;
-    public decimal Size { get; set; }
 
     public Guid? PackId { get; set; }
     [ForeignKey("PackId")]

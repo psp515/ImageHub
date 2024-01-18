@@ -60,11 +60,13 @@ public class AddImageHandler(IImageRepository repository,
             FileType = request.FileType,
             EditedAtUtc = DateTime.UtcNow,
             CreatedOnUtc = DateTime.UtcNow,
-            Path = path,
+            ImageStoreKey = path,
             PackId = packId
         };
 
         await repository.AddImage(image, cancellationToken);
+
+        //TODO: Process image
 
         return Result<AddImageResponse>.Success(new(image.Id));
     }
