@@ -2,7 +2,7 @@
 
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 
-public class GetImagePackEndpoiont : ICarterModule
+public class GetAntiforgeryEndpoiont : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

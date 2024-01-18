@@ -1,6 +1,5 @@
 ﻿using ImageHub.Api.Contracts.Image.AddImage;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Reflection;
 
 namespace ImageHub.Api.Tests.Features.Image;
@@ -106,4 +105,6 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+
+
 }
