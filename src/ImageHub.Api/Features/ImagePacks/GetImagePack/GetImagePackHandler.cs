@@ -8,7 +8,7 @@ public class GetImagePackHandler(IImagePackRepository repository) : IRequestHand
 
     public async Task<Result<GetImagePackResponse>> Handle(GetImagePackQuery request, CancellationToken cancellationToken)
     {
-        var imagePack = await _repository.GetImagePackByIdAsync(request.Id, cancellationToken);
+        var imagePack = await _repository.GetImagePackById(request.Id, cancellationToken);
 
         if(imagePack is null)
         {

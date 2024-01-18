@@ -17,7 +17,7 @@ public class UpdateImagePackHandler(IImagePackRepository repository, IValidator<
             return Result.Failure(error);
         }
 
-        var imagePack = await _repository.GetImagePackByIdAsync(request.Id, cancellationToken);
+        var imagePack = await _repository.GetImagePackById(request.Id, cancellationToken);
 
         if (imagePack is null)
         {

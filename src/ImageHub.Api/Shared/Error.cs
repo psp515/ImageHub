@@ -1,4 +1,5 @@
-﻿namespace ImageHub.Api.Shared;
+﻿
+namespace ImageHub.Api.Shared;
 
 public record Error
 {
@@ -25,4 +26,6 @@ public record Error
         => new(code, ErrorType.Conflict, description);
     public static Error Failure(string code, string? description = null)
         => new(code, ErrorType.Failure, description);
+    public static Error ServerError(string code, string? description = null) 
+        => new(code, ErrorType.ServerFail, description);
 }

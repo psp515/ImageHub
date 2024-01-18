@@ -1,10 +1,16 @@
 ﻿using FluentValidation;
-using ImageHub.Api.Features.ImagePacks;
 
 namespace ImageHub.Api.Features.Images.AddImage;
 
 public class AddImageValidator : AbstractValidator<AddImageCommand>
 {
+    private static readonly string[] AllowedFileTypes = 
+    { 
+        "image/jpeg", 
+        "image/png", 
+        "image/svg" 
+    };
+
     public AddImageValidator()
     {
         RuleFor(x => x.Name)
@@ -17,8 +23,8 @@ public class AddImageValidator : AbstractValidator<AddImageCommand>
         RuleFor(x => x.Image)
             .NotNull();
 
-        RuleFor(x => x.FileExtension)
-            .Must(x => x != FileTypes.Invalid);
-
+        RuleFor(x => x.FileType)
+            .Must(x => AllowedFileTypes.Contains(x))
+            .WithMessage($"Invalid file type. Allowed types: {string.Join(',',AllowedFileTypes)}");
     }
 }

@@ -34,6 +34,7 @@ public static class ResultExtensions
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
             ErrorType.Failure => StatusCodes.Status400BadRequest,
+            ErrorType.ServerFail => StatusCodes.Status500InternalServerError,
             _ => throw new InvalidEnumArgumentException()
         };
 
@@ -44,6 +45,7 @@ public static class ResultExtensions
         ErrorType.NotFound => "Not Found",
         ErrorType.Conflict => "Conflict",
         ErrorType.Failure => "Bad Request",
+        ErrorType.ServerFail =>"Server Error",
         _ => throw new InvalidEnumArgumentException()
     };
 }

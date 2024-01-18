@@ -7,6 +7,12 @@ public class AddImageErrors
     public static Error ValidationFailed(ValidationResult result)
         => Error.Validation("Image.Add.Validation", result.ToString());
 
-    public static Error ImagePackExist
+    public static Error ImageExist
         => Error.Conflict("Image.Add.Name.Exists");
+
+    public static Error FailedToSaveFile
+        => Error.ServerError("Image.Add.Store");
+
+    public static Error PackIsNotExisting 
+        => Error.Conflict("Image.Add.ImagePack.DontExists");
 }

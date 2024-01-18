@@ -41,7 +41,7 @@ public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
         .CountAsync(cancellationToken);
 
     public async Task<List<Image>> GetImagePacksAsync(Guid packId, int page, int pageSize, CancellationToken cancellationToken) 
-        => await _dbContext.Images.Where(x => x.GroupId == packId)
+        => await _dbContext.Images.Where(x => x.PackId == packId)
             .Skip((page-1)*pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

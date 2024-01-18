@@ -29,4 +29,16 @@
     <ProjectReference Include="..\ImageHub.Api\ImageHub.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestData\Images\gif.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\Images\jpeg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\Images\png.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
