@@ -21,7 +21,7 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assemb
 builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+builder.Services.AddAntiforgery(options => options.FormFieldName = "csrfToken");
 
 builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
@@ -53,7 +53,6 @@ app.UseHttpsRedirection();
 app.UseExceptionHandler();
 app.UseRouting();
 app.UseAntiforgery();
-
 app.MapCarter();
 app.Run();
 

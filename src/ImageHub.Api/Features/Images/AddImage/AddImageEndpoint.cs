@@ -8,7 +8,7 @@ public class AddImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/images", async(ISender sender, [FromForm] AddImageRequest request, 
+        app.MapPost("/api/images", async (ISender sender, [FromForm] AddImageRequest request,
             [FromQuery(Name = "pack")] string packId = "") =>
         {
             var command = new AddImageCommand
@@ -26,7 +26,6 @@ public class AddImageEndpoint : ICarterModule
                 return result.ToResultsDetails();
 
             return Results.Created($"api/images/{result.Value.Id}", result.Value);
-        }).WithName(ImagesExtensions.Name)
-        .DisableAntiforgery(); // Potential Thread !!! 
+        }).WithName(ImagesExtensions.Name);
     }
 }
