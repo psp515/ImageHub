@@ -26,8 +26,8 @@ public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken) => await _dbContext.Images
-            .AnyAsync(x => x.Name == name, cancellationToken: cancellationToken);
+    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken) 
+        => await _dbContext.Images.AnyAsync(x => x.Name == name, cancellationToken: cancellationToken);
 
     public async Task<Image?> GetImageById(Guid guid, CancellationToken cancellationToken)
     {

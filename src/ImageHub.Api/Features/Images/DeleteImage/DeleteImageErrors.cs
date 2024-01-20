@@ -1,7 +1,12 @@
-﻿namespace ImageHub.Api.Features.Images.DeleteImage;
+﻿using FluentValidation.Results;
+
+namespace ImageHub.Api.Features.Images.DeleteImage;
 
 public class DeleteImageErrors
 {
-    public static Error ImageNotFound 
-        => Error.NotFound("Image.Get.NotFound");
+    public static Error ImageNotFound
+        => Error.NotFound("Image.Delete.NotFound");
+
+    public static Error ValidationFailed(ValidationResult validationResult)
+        => Error.Validation("Image.Delete.Validation", validationResult.ToString());
 }
