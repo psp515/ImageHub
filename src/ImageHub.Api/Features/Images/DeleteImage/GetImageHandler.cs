@@ -14,7 +14,7 @@ public class GetImageHandler(IImageRepository imageRepository, IValidator<GetIma
 
         if (!validationResult.IsValid)
         {
-            var error = GetImageErrors.ValidationFailed(validationResult);
+            var error = DeleteImageErrors.ValidationFailed(validationResult);
             return Result<GetImageResponse>.Failure(error);
         }
 
@@ -23,7 +23,7 @@ public class GetImageHandler(IImageRepository imageRepository, IValidator<GetIma
 
         if (image is null)
         {
-            var error = GetImageErrors.ImageNotFound;
+            var error = DeleteImageErrors.ImageNotFound;
             return Result<GetImageResponse>.Failure(error);
         }
 

@@ -11,11 +11,17 @@ public class AddImageValidator : AbstractValidator<AddImageCommand>
         "image/svg" 
     };
 
+    private static int MaxKiloBytes = 48;
+    private static int BytesInKiloByte = 1024;
+
     public AddImageValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()
             .MaximumLength(50);
+
+        RuleFor(x => x.Image.Length)
+            .LessThan(MaxKiloBytes * BytesInKiloByte);
 
         RuleFor(x => x.Description)
             .MaximumLength(500);

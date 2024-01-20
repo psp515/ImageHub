@@ -1,9 +1,9 @@
 ﻿
 using ImageHub.Api.Extensions;
 
-namespace ImageHub.Api.Features.Images.GetImage;
+namespace ImageHub.Api.Features.Images.DeleteImage;
 
-public class GetImageEndpoint : ICarterModule
+public class DeleteImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

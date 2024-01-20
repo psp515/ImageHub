@@ -2,11 +2,11 @@
 
 public class GetImageResponse
 {
-    public Guid Id { get; set; }
-    public Guid PackId { get; set; }
+    public string Id { get; set; } = string.Empty;
+    public string PackId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string FileType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateTime CreatedAtUtc { get; set; }
-    public DateTime UpdatedAtUtc { get; set; }
+    public DateTime CreatedOnUtc { get; set; }
+    public DateTime EditedAtUtc { get; set; }
 }
