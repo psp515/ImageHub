@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using ImageHub.Api.Contracts.Image.AddImage;
 using ImageHub.Api.Contracts.Image.GetImage;
-using ImageHub.Api.Features.Images.AddImage;
 using ImageHub.Api.Features.Images.Repositories;
 
 namespace ImageHub.Api.Features.Images.GetImage;

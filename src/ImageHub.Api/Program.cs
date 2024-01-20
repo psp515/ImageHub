@@ -5,7 +5,6 @@ using ImageHub.Api.Features.Images.Repositories;
 using ImageHub.Api.Infrastructure;
 using ImageHub.Api.Infrastructure.Persistence;
 using ImageHub.Api.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
