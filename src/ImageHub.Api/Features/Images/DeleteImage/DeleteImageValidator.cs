@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using ImageHub.Api.Contracts.Image.DeleteImage;
+using ImageHub.Api.Features.Images.DeteleImage;
 
 namespace ImageHub.Api.Features.Images.DeleteImage;
 
-public class DeleteImageValidator : AbstractValidator<DeleteImageResponse>
+public class DeleteImageValidator : AbstractValidator<DeleteImageCommand>
 {
     public DeleteImageValidator()
     {
