@@ -6,11 +6,11 @@ using ImageHub.Api.Features.Images.Repositories;
 
 namespace ImageHub.Api.Features.Images.DeleteImage;
 
-public class GetImageHandler(IImageRepository imageRepository, IValidator<DeleteImageCommand> validator) : IRequestHandler<GetImageQuery, Result<GetImageResponse>>
+public class GetImageHandler(IImageRepository imageRepository, IValidator<DeleteImageCommand> validator) : IRequestHandler<DeleteImageCommand, Result<DeleteImageResponse>>
 {
     public async Task<Result<DeleteImageResponse>> Handle(DeleteImageCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {

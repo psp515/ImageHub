@@ -19,17 +19,19 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
         Assert.NotNull(body);
         Assert.NotNull(body.Token);
 
-        var formContent = new MultipartFormDataContent();
-        formContent.Add(new StringContent(description), "description");
-        formContent.Add(new StringContent(name), "name");
-        formContent.Add(new StringContent(body.Token), "csrfToken");
+        var formContent = new MultipartFormDataContent
+        {
+            { new StringContent(description), "description" },
+            { new StringContent(name), "name" },
+            { new StringContent(body.Token), "csrfToken" }
+        };
 
         return formContent;
     }
 
     private async Task<MultipartFormDataContent> GetPng()
     {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var filePath = Path.Combine(dirName, "TestData/Images/png.png");
         var fileName = Path.GetFileName(filePath);
         var stream = new StreamContent(File.OpenRead(filePath));
@@ -43,7 +45,7 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
 
     private async Task<MultipartFormDataContent> GetJpeg()
     {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var filePath = Path.Combine(dirName, "TestData/Images/jpeg.jpg");
         var fileName = Path.GetFileName(filePath);
         var stream = new StreamContent(File.OpenRead(filePath));
@@ -57,7 +59,7 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
 
     private async Task<MultipartFormDataContent> GetGif()
     {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var filePath = Path.Combine(dirName, "TestData/Images/gif.gif");
         var fileName = Path.GetFileName(filePath);
         var stream = new StreamContent(File.OpenRead(filePath));

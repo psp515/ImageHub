@@ -7,7 +7,7 @@ public class GetAntiforgeryEndpoiont : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/security/antiforgery/token", async (HttpContext httpContext, IAntiforgery antiforgery) =>
+        app.MapGet("/api/security/antiforgery/token", (HttpContext httpContext, IAntiforgery antiforgery) =>
         {
             var tokens = antiforgery.GetAndStoreTokens(httpContext);
 
