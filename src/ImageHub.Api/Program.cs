@@ -25,7 +25,9 @@ builder.Services.AddAntiforgery(options => options.FormFieldName = "csrfToken");
 builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageStoreRepository, FileRepository>();
+
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
 builder.Services.AddCors(options =>
 {

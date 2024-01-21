@@ -5,14 +5,14 @@ namespace ImageHub.Api.Features.Images.AddImage;
 public class AddImageValidator : AbstractValidator<AddImageCommand>
 {
     private static readonly string[] AllowedFileTypes = 
-    { 
+    [ 
         "image/jpeg", 
         "image/png", 
         "image/svg" 
-    };
+    ];
 
-    private static int MaxKiloBytes = 48;
-    private static int BytesInKiloByte = 1024;
+    private static readonly int MaxKiloBytes = 64;
+    private static readonly int BytesInKiloByte = 1024;
 
     public AddImageValidator()
     {
