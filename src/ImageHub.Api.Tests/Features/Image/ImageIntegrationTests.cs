@@ -115,4 +115,29 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Fact]
+    public async Task FailToAddPngWithoutAntiforgeryToken()
+    {
+        //Arrange
+        var formContent = await GetPng(false);
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task FailToAddJpgWithoutAntiforgeryToken()
+    {
+        //Arrange
+        var formContent = await GetJpeg(false);
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+    }
 }
