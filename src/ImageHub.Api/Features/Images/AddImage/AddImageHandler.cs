@@ -7,20 +7,11 @@ namespace ImageHub.Api.Features.Images.AddImage;
 
 public class AddImageHandler(IImageRepository repository, 
                              IImageStoreRepository imageStoreRepository,
-                             IImagePackRepository imagePackRepository,
-                             IValidator<AddImageCommand> validator) 
+                             IImagePackRepository imagePackRepository) 
     : IRequestHandler<AddImageCommand, Result<AddImageResponse>>
 {
     public async Task<Result<AddImageResponse>> Handle(AddImageCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            var error = AddImageErrors.ValidationFailed(validationResult);
-            return Result<AddImageResponse>.Failure(error);
-        }
-
         var exists = await repository.ExistsByName(request.Name, cancellationToken);
 
         if (exists)

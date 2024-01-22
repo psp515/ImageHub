@@ -1,21 +1,12 @@
-﻿using FluentValidation;
-using ImageHub.Api.Contracts.Image.GetImage;
+﻿using ImageHub.Api.Contracts.Image.GetImage;
 using ImageHub.Api.Features.Images.Repositories;
 
 namespace ImageHub.Api.Features.Images.GetImage;
 
-public class GetImageHandler(IImageRepository imageRepository, IValidator<GetImageQuery> validator) : IRequestHandler<GetImageQuery, Result<GetImageResponse>>
+public class GetImageHandler(IImageRepository imageRepository) : IRequestHandler<GetImageQuery, Result<GetImageResponse>>
 {
     public async Task<Result<GetImageResponse>> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            var error = GetImageErrors.ValidationFailed(validationResult);
-            return Result<GetImageResponse>.Failure(error);
-        }
-
         var guid = Guid.Parse(request.Id);
         var image = await imageRepository.GetImageById(guid, cancellationToken);
 

@@ -28,6 +28,25 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
     }
 
     [Fact]
+    public async Task FailToAddImagePack()
+    {
+        //Arrange
+        var request = new AddImagePackRequest()
+        {
+            Name = $"{Guid.NewGuid()}{Guid.NewGuid()}",
+            Description = "Test Image Pack Description."
+        };
+
+        var content = TestsCommon.CreateHttpContent(request);
+
+        //Act
+        var response = await _client.PostAsync("/api/imagepacks", content);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
     public async Task FailAddImagePackWithSameName()
     {
         //Arrange
