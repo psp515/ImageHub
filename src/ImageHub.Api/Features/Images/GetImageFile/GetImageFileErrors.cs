@@ -10,6 +10,6 @@ public class GetImageFileErrors
     public static Error ImageNotFoundInStorage
         => Error.NotFound("Image.GetFile.NotFound.Storage");
 
-    public static Error ValidationFailed(ValidationResult validationResult)
+    public static Error ValidationFailed(FluentValidation.Results.ValidationResult validationResult)
         => Error.Validation("Image.GetFile.Validation", validationResult.ToString());
 }

@@ -7,6 +7,6 @@ public class GetImageErrors
     public static Error ImageNotFound 
         => Error.NotFound("Image.Get.NotFound");
 
-    public static Error ValidationFailed(ValidationResult validationResult)
+    public static Error ValidationFailed(FluentValidation.Results.ValidationResult validationResult)
         => Error.Validation("Image.Get.Validation", validationResult.ToString());
 }

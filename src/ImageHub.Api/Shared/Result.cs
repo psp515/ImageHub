@@ -21,14 +21,14 @@ public class Result
     public static Result Failure(Error error) => new(false, error);
 }
 
-public sealed class Result<T> : Result
+public class Result<T> : Result
 {
-    private Result(bool isSuccess, Error error, T value) : base(isSuccess, error)
+    protected Result(bool isSuccess, Error error, T value) : base(isSuccess, error)
     {
         Value = value;
     }
 
-    private Result(bool isSuccess, Error error) : base(isSuccess, error)
+    protected Result(bool isSuccess, Error error) : base(isSuccess, error)
     {
         Value = default!;
     }

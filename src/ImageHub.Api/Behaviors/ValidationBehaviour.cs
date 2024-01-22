@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
+using ImageHub.Api.Abstractions.Results;
 
 namespace ImageHub.Api.Behaviors;
 
-public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators
-    ,ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
+public class ValidationBehaviour<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators,
+    ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result
@@ -35,9 +37,7 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
                 typeof(TRequest).Name,
                 DateTime.UtcNow);
 
-            //TODO: fix casting
-            var result = ValidationResult<TResponse>(errors);
-            return result;
+            return CreateValidationResult<TResponse>(errors);
         }
 
         logger.LogInformation("Request Type: {@RequestName}, Time: {@DateTimeUtc}, Validation successfull.",
@@ -47,9 +47,20 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
         return await next();
     }
 
-    public static TResult ValidationResult<TResult>(Error[] errors) where TResult : Result
+    public static TResult CreateValidationResult<TResult>(Error[] errors) 
+        where TResult : Result
     {
-        var error = errors.First();
-        return (Result.Failure(error) as TResult)!;
+        if(typeof(TResult) == typeof(Result))
+        {
+            return (ValidationResult.WithErrors(errors) as TResult)!;
+        }
+
+        object validationResult = typeof(ValidationResult<>)!
+            .GetGenericTypeDefinition()!
+            .MakeGenericType(typeof(TResult).GenericTypeArguments[0])!
+            .GetMethod(nameof(ValidationResult.WithErrors))!
+            .Invoke(null, [errors])!;
+
+        return (TResult) validationResult;
     }
 }

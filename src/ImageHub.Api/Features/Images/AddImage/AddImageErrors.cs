@@ -4,7 +4,7 @@ namespace ImageHub.Api.Features.Images.AddImage;
 
 public class AddImageErrors
 {
-    public static Error ValidationFailed(ValidationResult result)
+    public static Error ValidationFailed(FluentValidation.Results.ValidationResult result)
         => Error.Validation("Image.Add.Validation", result.ToString());
 
     public static Error ImageExist
