@@ -6,15 +6,18 @@ namespace ImageHub.Api.Tests.Features.Image;
 
 public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
-    private async Task<MultipartFormDataContent> BaseMultipart(bool antiforgery)
+    private async Task<MultipartFormDataContent> BaseMultipart(string fileRelativePath, string fileType, bool antiforgery)
     {
-        var name = $"Test {Guid.NewGuid()}";
-        var description = "Test Image Description.";
+        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+        var filePath = Path.Combine(dirName, fileRelativePath);
+        var stream = new StreamContent(File.OpenRead(filePath));
+        stream.Headers.ContentType = new(fileType);
 
         var formContent = new MultipartFormDataContent
         {
-            { new StringContent(description), "description" },
-            { new StringContent(name), "name" }, 
+            { new StringContent("Test Image Description."), "description" },
+            { new StringContent($"Test {Guid.NewGuid()}"), "name" },
+            { stream, "image", Path.GetFileName(filePath) }
         };
 
         if (antiforgery)
@@ -32,49 +35,14 @@ public class ImageIntegrationTests(IntegrationTestWebAppFactory factory) : BaseI
         return formContent;
     }
 
-    private async Task<MultipartFormDataContent> GetPng(bool antiforgery = true)
-    {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        var filePath = Path.Combine(dirName, "TestData/Images/png.png");
-        var fileName = Path.GetFileName(filePath);
-        var stream = new StreamContent(File.OpenRead(filePath));
-        stream.Headers.ContentType = new("image/png");
+    private async Task<MultipartFormDataContent> GetPng(bool antiforgery = true) 
+        => await BaseMultipart("TestData/Images/png.png", "image/png", antiforgery);
 
-        var formContent = await BaseMultipart(antiforgery);
-        formContent.Add(stream, "image", fileName);
-
-        return formContent;
-    }
-
-    private async Task<MultipartFormDataContent> GetJpeg(bool antiforgery = true)
-    {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        var filePath = Path.Combine(dirName, "TestData/Images/jpeg.jpg");
-        var fileName = Path.GetFileName(filePath);
-        var stream = new StreamContent(File.OpenRead(filePath));
-        stream.Headers.ContentType = new("image/jpeg");
-
-        var formContent = await BaseMultipart(antiforgery);
-        formContent.Add(stream, "image", fileName);
-
-        return formContent;
-    }
+    private async Task<MultipartFormDataContent> GetJpeg(bool antiforgery = true) 
+        => await BaseMultipart("TestData/Images/jpeg.jpg", "image/jpeg", antiforgery);
 
     private async Task<MultipartFormDataContent> GetGif(bool antiforgery = true)
-    {
-        var dirName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        var filePath = Path.Combine(dirName, "TestData/Images/gif.gif");
-        var fileName = Path.GetFileName(filePath);
-        var stream = new StreamContent(File.OpenRead(filePath));
-        stream.Headers.ContentType = new("image/gif");
-
-        var formContent = await BaseMultipart(antiforgery);
-        formContent.Add(stream, "image", fileName);
-
-        return formContent;
-    }
-
-    //TODO: Optimize get functions
+        => await BaseMultipart("TestData/Images/gif.gif", "image/gif", antiforgery);
 
     [Fact]
     public async Task AddPng()
