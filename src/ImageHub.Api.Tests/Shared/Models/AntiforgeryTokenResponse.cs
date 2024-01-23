@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ImageHub.Api.Tests.Features.Image.Models;
+namespace ImageHub.Api.Tests.Shared.Models;
 
 public class AntiforgeryTokenResponse
 {

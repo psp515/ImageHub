@@ -1,7 +1,7 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
 using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
 using ImageHub.Api.Tests.Features.ImagePack.Models;
-using ImageHub.Api.Tests.Models;
+using ImageHub.Api.Tests.Shared.Models;
 using System.Net;
 
 namespace ImageHub.Api.Tests.Features.ImagePack;

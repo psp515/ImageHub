@@ -60,7 +60,7 @@ public class AddImageIntegrationTests(IntegrationTestWebAppFactory factory) : Ba
     public async Task FailToAddJpgWithoutAntiforgeryToken()
     {
         //Arrange
-        var formContent = await GetJpeg(false);
+        var formContent = await GetJpegWithoutAntiforgery();
 
         //Act
         var response = await _client.PostAsync("/api/images", formContent);
