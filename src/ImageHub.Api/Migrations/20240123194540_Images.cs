@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ImageHub.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class ModelCreation : Migration
+    public partial class Images : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,11 +32,10 @@ namespace ImageHub.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Bytes = table.Column<byte[]>(type: "bytea", nullable: false),
+                    ImageStoreKey = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    FileExtension = table.Column<string>(type: "text", nullable: false),
-                    Size = table.Column<decimal>(type: "numeric", nullable: false),
-                    GroupId = table.Column<Guid>(type: "uuid", nullable: true),
+                    FileType = table.Column<string>(type: "text", nullable: false),
+                    PackId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedOnUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EditedAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -44,8 +43,8 @@ namespace ImageHub.Api.Migrations
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_ImagePacks_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_Images_ImagePacks_PackId",
+                        column: x => x.PackId,
                         principalTable: "ImagePacks",
                         principalColumn: "Id");
                 });
@@ -76,9 +75,9 @@ namespace ImageHub.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_GroupId",
+                name: "IX_Images_PackId",
                 table: "Images",
-                column: "GroupId");
+                column: "PackId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Thumbnails_ImageId",

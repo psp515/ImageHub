@@ -1,7 +1,6 @@
 ﻿using ImageHub.Api.Contracts.Image.GetImages;
 using ImageHub.Api.Extensions;
 using Mapster;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.GetImagesByPack;
 
@@ -9,16 +8,13 @@ public class GetImagesEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/images", async (ISender sender,
-            [FromQuery(Name = "pack")] Guid packId = default,
-            [FromQuery(Name = "page")] int page = 1,
-            [FromQuery(Name = "size")] int size = 25) =>
+        app.MapGet("/api/images", async (ISender sender, Guid? packId = null, int page = 1, int size = 25) =>
         {
             var query = new GetImagesQuery
             {
-                PackId = packId,
-                Page = page,
-                Size = size
+                PackId = packId ?? Guid.Empty,
+                Page = 1,
+                Size = 1
             };
 
             var result = await sender.Send(query);
@@ -28,7 +24,7 @@ public class GetImagesEndpoint : ICarterModule
 
             var dtos = result.Value
                 .Select(x => x.Adapt<ImageDto>())
-                .ToList(); 
+                .ToList();
 
             var response = new GetImagesResponse
             {
@@ -36,6 +32,6 @@ public class GetImagesEndpoint : ICarterModule
             };
 
             return Results.Ok(result.Value);
-        }).WithGroupName(ImagesExtensions.Name);
+        }).WithTags(ImagesExtensions.Name);
     }
 }

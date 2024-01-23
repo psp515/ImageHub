@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ImageHub.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240118184736_ImagesRework")]
-    partial class ImagesRework
+    [Migration("20240123194540_Images")]
+    partial class Images
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,23 +45,20 @@ namespace ImageHub.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ImageStoreKey")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Size")
-                        .HasColumnType("numeric");
+                    b.Property<Guid?>("PackId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("PackId");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -134,13 +131,11 @@ namespace ImageHub.Api.Migrations
 
             modelBuilder.Entity("ImageHub.Api.Entities.Image", b =>
                 {
-                    b.HasOne("ImageHub.Api.Entities.ImagePack", "Group")
+                    b.HasOne("ImageHub.Api.Entities.ImagePack", "Pack")
                         .WithMany("Images")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PackId");
 
-                    b.Navigation("Group");
+                    b.Navigation("Pack");
                 });
 
             modelBuilder.Entity("ImageHub.Api.Entities.Thumbnail", b =>

@@ -13,6 +13,7 @@ public class UpdateImagePackHandler(IImagePackRepository repository) : IRequestH
         }
 
         imagePack.Description = request.Description;
+        imagePack.EditedAtUtc = DateTime.UtcNow;
 
         await repository.UpdateImagePack(imagePack, cancellationToken);
 

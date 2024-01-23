@@ -27,6 +27,6 @@ public class AddImageEndpoint : ICarterModule
                 return result.ToResultsDetails();
 
             return Results.Created($"api/images/{result.Value.Id}", result.Value);
-        }).WithGroupName(ImagesExtensions.Name);
+        }).WithTags(ImagesExtensions.Name);
     }
 }

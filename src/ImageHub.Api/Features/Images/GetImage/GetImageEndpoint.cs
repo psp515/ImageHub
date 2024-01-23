@@ -7,7 +7,7 @@ public class GetImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/images/{id:guid}", async (Guid id, ISender sender) =>
+        app.MapGet("/api/images/{id:guid}", async (Guid id, ISender sender) =>
         {
             var query = new GetImageQuery { Id = id };
 
@@ -15,6 +15,6 @@ public class GetImageEndpoint : ICarterModule
 
             return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
 
-        }).WithGroupName(ImagesExtensions.Name);
+        }).WithTags(ImagesExtensions.Name);
     }
 }
