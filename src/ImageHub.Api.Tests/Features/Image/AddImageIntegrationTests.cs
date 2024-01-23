@@ -58,6 +58,21 @@ public class AddImageIntegrationTests(IntegrationTestWebAppFactory factory) : Ba
     }
 
     [Fact]
+    public async Task FailToAddTwoPngWithSameName()
+    {
+        //Arrange
+        var formContent = await GetPng();
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+        var copyResponse = await _client.PostAsync("/api/images", formContent);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Conflict, copyResponse.StatusCode);
+    }
+
+    [Fact]
     public async Task FailToAddJpgWithoutAntiforgeryToken()
     {
         //Arrange
