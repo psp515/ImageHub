@@ -21,6 +21,22 @@ public class BaseImageIntegrationTest(IntegrationTestWebAppFactory factory) : Ba
         .WithTooLongName()
         .Build();
 
+    protected async Task<MultipartFormDataContent> GetPngWithTooLongDescription()
+        => await new ImageFormDataBuilder(_client)
+        .WithTooLongName()
+        .Build();
+
+    protected async Task<MultipartFormDataContent> GetJpegWithTooLongName()
+        => await new ImageFormDataBuilder(_client)
+        .WithTooLongDescription()
+        .Build();
+
+    protected async Task<MultipartFormDataContent> GetJpegWithTooLongDescription()
+        => await new ImageFormDataBuilder(_client)
+        .WithTooLongDescription()
+        .Build();
+
+
     protected async Task<MultipartFormDataContent> GetPng()
         => await new ImageFormDataBuilder(_client)
         .Build();

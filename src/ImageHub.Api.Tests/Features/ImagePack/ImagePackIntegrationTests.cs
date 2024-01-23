@@ -1,7 +1,7 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
 using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
 using ImageHub.Api.Tests.Features.ImagePack.Models;
-using ImageHub.Api.Tests.Shared.Models;
+using ImageHub.Api.Tests.Shared.Responses;
 using System.Net;
 
 namespace ImageHub.Api.Tests.Features.ImagePack;
@@ -18,7 +18,7 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
+        var content = TestsCommon.Serialize(request);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
@@ -37,7 +37,7 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
+        var content = TestsCommon.Serialize(request);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
@@ -56,7 +56,7 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
+        var content = TestsCommon.Serialize(request);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
@@ -77,13 +77,13 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
+        var content = TestsCommon.Serialize(request);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
-        var idObject = await TestsCommon.DeserializeResponse<IdResponse>(response);
+        var idObject = await TestsCommon.Deserialize<IdResponse>(response);
         var getResponse = await _client.GetAsync($"/api/imagepacks/{idObject!.Id}");
-        var pack = await TestsCommon.DeserializeResponse<ImagePackDto>(getResponse);
+        var pack = await TestsCommon.Deserialize<ImagePackDto>(getResponse);
 
         //Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -107,15 +107,15 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Updated Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
-        var updateContent = TestsCommon.CreateHttpContent(updateRequest);
+        var content = TestsCommon.Serialize(request);
+        var updateContent = TestsCommon.Serialize(updateRequest);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
-        var idObject = await TestsCommon.DeserializeResponse<IdResponse>(response);
+        var idObject = await TestsCommon.Deserialize<IdResponse>(response);
         var updateResponse = await _client.PatchAsync($"/api/imagepacks/{idObject.Id}", updateContent);
         var getResponse = await _client.GetAsync($"/api/imagepacks/{idObject!.Id}");
-        var pack = await TestsCommon.DeserializeResponse<ImagePackDto>(getResponse);
+        var pack = await TestsCommon.Deserialize<ImagePackDto>(getResponse);
 
         //Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -140,8 +140,8 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content1 = TestsCommon.CreateHttpContent(request1);
-        var content2 = TestsCommon.CreateHttpContent(request2);
+        var content1 = TestsCommon.Serialize(request1);
+        var content2 = TestsCommon.Serialize(request2);
 
         //Act   
         var response1 = await _client.PostAsync("/api/imagepacks", content1);
@@ -149,7 +149,7 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
 
         var getResponse = await _client.GetAsync($"/api/imagepacks");
 
-        var packs = await TestsCommon.DeserializeResponse<ImagePacksDto>(getResponse);
+        var packs = await TestsCommon.Deserialize<ImagePacksDto>(getResponse);
 
         //Assert
         Assert.Equal(HttpStatusCode.Created, response1.StatusCode);
@@ -172,11 +172,11 @@ public class ImagePackIntegrationTests(IntegrationTestWebAppFactory factory) : B
             Description = "Test Image Pack Description."
         };
 
-        var content = TestsCommon.CreateHttpContent(request);
+        var content = TestsCommon.Serialize(request);
 
         //Act
         var response = await _client.PostAsync("/api/imagepacks", content);
-        var id = await TestsCommon.DeserializeResponse<IdResponse>(response);
+        var id = await TestsCommon.Deserialize<IdResponse>(response);
         var deleteResponse = await _client.DeleteAsync($"/api/imagepacks/{id!.Id}");
 
         //Assert

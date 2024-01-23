@@ -8,7 +8,10 @@ public class GetImagesEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/images", async (ISender sender, Guid? packId = null, int page = 1, int size = 25) =>
+        app.MapGet("/api/images", async (ISender sender, 
+            Guid? packId = null, 
+            int page = 1, int 
+            size = 25) =>
         {
             var query = new GetImagesQuery
             {

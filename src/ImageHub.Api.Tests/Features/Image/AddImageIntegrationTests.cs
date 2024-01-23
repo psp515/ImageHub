@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using ImageHub.Api.Tests.Shared.Responses;
+using System.Net;
 
 namespace ImageHub.Api.Tests.Features.Image;
 
@@ -68,4 +69,35 @@ public class AddImageIntegrationTests(IntegrationTestWebAppFactory factory) : Ba
         //Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
     }
+
+    [Fact]
+    public async Task FailToAddPngWithTooLongName()
+    {
+        //Arrange
+        var formContent = await GetPngWithTooLongName();
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var result = await TestsCommon.Deserialize<ErrorResponse>(response);
+        Assert.Equal(1, result.Errors.Count);
+    }
+
+    [Fact]
+    public async Task FailToAddPngWithTooLongDescription()
+    {
+        //Arrange
+        var formContent = await GetPngWithTooLongDescription();
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        var result = await TestsCommon.Deserialize<ErrorResponse>(response);
+        Assert.Equal(1, result.Errors.Count);
+    }
+
 }

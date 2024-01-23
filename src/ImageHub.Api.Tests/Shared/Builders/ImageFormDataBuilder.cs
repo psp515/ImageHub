@@ -1,24 +1,16 @@
 ﻿using ImageHub.Api.Tests.Shared.Models;
-using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.VisualBasic.FileIO;
+using ImageHub.Api.Tests.Shared.Responses;
 using System.Net;
 using System.Reflection;
 
 namespace ImageHub.Api.Tests.Shared.Builders;
 
-public class ImageFormDataBuilder
+public class ImageFormDataBuilder(HttpClient client)
 {
     private string Name { get; set; } = $"Test {Guid.NewGuid()}";
     private string Description { get; set; } = "Test Image Description.";
     private ImagesTypes Type { get; set; } = ImagesTypes.Png;
     private bool Antiforgery { get; set; } = true;
-
-    private readonly HttpClient _client;
-
-    public ImageFormDataBuilder(HttpClient client)
-    {
-        _client = client;
-    }
 
     public async Task<MultipartFormDataContent> Build()
     {
@@ -39,10 +31,10 @@ public class ImageFormDataBuilder
 
         if (Antiforgery)
         {
-            var response = await _client.GetAsync("/api/security/antiforgery/token");
+            var response = await client.GetAsync("/api/security/antiforgery/token");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            var body = await TestsCommon.DeserializeResponse<AntiforgeryTokenResponse>(response);
+            var body = await TestsCommon.Deserialize<AntiforgeryTokenResponse>(response);
             Assert.NotNull(body);
             Assert.NotNull(body.Token);
 
