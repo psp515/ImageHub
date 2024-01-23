@@ -3,10 +3,8 @@
 public class UpdateImagePackHandler(IImagePackRepository repository) : IRequestHandler<UpdateImagePackCommand, Result>
 {
     public async Task<Result> Handle(UpdateImagePackCommand request, CancellationToken cancellationToken)
-    {
-        var guid = Guid.Parse(request.Id);
-
-        var imagePack = await repository.GetImagePackById(guid, cancellationToken);
+    { 
+        var imagePack = await repository.GetImagePackById(request.Id, cancellationToken);
 
         if (imagePack is null)
         {

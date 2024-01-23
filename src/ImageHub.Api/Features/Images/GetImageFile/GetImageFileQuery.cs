@@ -4,5 +4,5 @@ namespace ImageHub.Api.Features.Images.GetImageFile;
 
 public class GetImageFileQuery : IRequest<Result<GetImageFileResponse>>
 {
-    public string Id { get; set; } = string.Empty;
+    public Guid Id { get; set; } = Guid.Empty;
 }

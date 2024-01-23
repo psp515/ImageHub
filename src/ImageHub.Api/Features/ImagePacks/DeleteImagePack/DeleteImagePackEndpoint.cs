@@ -6,7 +6,7 @@ public class DeleteImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/imagepacks/{id}", async (string id, ISender sender) =>
+        app.MapDelete("/api/imagepacks/{id:guid}", async (Guid id, ISender sender) =>
         {
             var command = new DeleteImagePackCommand { Id = id };
 

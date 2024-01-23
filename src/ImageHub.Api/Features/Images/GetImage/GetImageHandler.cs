@@ -7,8 +7,7 @@ public class GetImageHandler(IImageRepository imageRepository) : IRequestHandler
 {
     public async Task<Result<GetImageResponse>> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
-        var guid = Guid.Parse(request.Id);
-        var image = await imageRepository.GetImageById(guid, cancellationToken);
+        var image = await imageRepository.GetImageById(request.Id, cancellationToken);
 
         if (image is null)
         {

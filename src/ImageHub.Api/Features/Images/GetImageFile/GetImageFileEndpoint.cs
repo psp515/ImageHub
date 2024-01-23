@@ -7,7 +7,7 @@ public class GetImageFileEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/images/{id}/file", async(string id, ISender sender) =>
+        app.MapGet("api/images/{id:guid}/file", async(Guid id, ISender sender) =>
         {
             var query = new GetImageFileQuery { Id=id};
 
@@ -19,6 +19,6 @@ public class GetImageFileEndpoint : ICarterModule
             return Results.File(result.Value.Bytes, contentType: 
                 result.Value.FileType, 
                 lastModified: result.Value.EditedAtUtc);
-        });
+        }).WithGroupName(ImagesExtensions.Name);
     }
 }

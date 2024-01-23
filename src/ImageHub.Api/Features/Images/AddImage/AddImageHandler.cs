@@ -20,7 +20,7 @@ public class AddImageHandler(IImageRepository repository,
             return Result<AddImageResponse>.Failure(error);
         }
 
-        Guid? packId = null;
+        var packId = Guid.Empty;
 
         if (request.PackId is not null)
         {

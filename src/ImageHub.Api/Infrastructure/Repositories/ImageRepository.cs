@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ImageHub.Api.Infrastructure.Repositories;
 
-public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
+public class ImageRepository(ApplicationDbContext _dbContext) : IImageRepository
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
-
     public async Task<bool> AddImage(Image image, CancellationToken cancellationToken)
     {
         _dbContext.Add(image);
@@ -31,7 +29,16 @@ public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
 
     public async Task<Image?> GetImageById(Guid guid, CancellationToken cancellationToken)
     {
-        return await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == guid);
+        return await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == guid, cancellationToken);
+    }
+
+    public async Task<List<Image>> GetImages(Guid packId, int page, int size, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Images
+            .Where(x => x.PackId == packId)
+            .Skip((page-1)*size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Image?> GetImageByImagePackIdAsync(Guid id, CancellationToken cancellationToken) 

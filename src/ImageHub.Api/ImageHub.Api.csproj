@@ -38,6 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\Images\UpdateImage\" />
 	  <Folder Include="Logs\" />
 	</ItemGroup>
 

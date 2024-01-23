@@ -4,6 +4,6 @@ namespace ImageHub.Api.Features.Images.DeteleImage;
 
 public class DeleteImageCommand : IRequest<Result<DeleteImageResponse>>
 {
-    public string Id { get; set; } = string.Empty;
+    public Guid Id { get; set; } = Guid.Empty;
 }
 

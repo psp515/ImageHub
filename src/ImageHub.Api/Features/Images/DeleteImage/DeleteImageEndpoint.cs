@@ -8,7 +8,7 @@ public class DeleteImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/images/{id}", async (string id, ISender sender) =>
+        app.MapGet("api/images/{id:guid}", async (Guid id, ISender sender) =>
         {
             var query = new DeleteImageCommand { Id = id };
 

@@ -3,13 +3,12 @@ using ImageHub.Api.Features.Images.Repositories;
 
 namespace ImageHub.Api.Features.Images.GetImageFile;
 
-public class GetImageFileQueryHnadler(IImageRepository imageRepository, 
+public class GetImageFileHnadler(IImageRepository imageRepository, 
                                   IImageStoreRepository imageStoreRepository) : IRequestHandler<GetImageFileQuery, Result<GetImageFileResponse>>
 {
     public async Task<Result<GetImageFileResponse>> Handle(GetImageFileQuery request, CancellationToken cancellationToken)
     {
-        var guid = Guid.Parse(request.Id);
-        var image = await imageRepository.GetImageById(guid, cancellationToken);
+        var image = await imageRepository.GetImageById(request.Id, cancellationToken);
 
         if (image is null)
         {
