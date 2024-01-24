@@ -20,17 +20,19 @@ public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRep
         return await _dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken)
-    {
-        return await _dbContext.ImagePacks
+    public async Task<bool> ExistsByName(string name, CancellationToken cancellationToken) 
+        => await _dbContext.ImagePacks
             .AnyAsync(x => x.Name == name, cancellationToken);
-    }
 
     public async Task<ImagePack?> GetImagePackById(Guid id, CancellationToken cancellationToken) 
-        => await _dbContext.ImagePacks.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        => await _dbContext.ImagePacks
+        .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public async Task<List<ImagePack>> GetImagePacksAsync(CancellationToken cancellationToken)
-        => await _dbContext.ImagePacks.ToListAsync(cancellationToken);
+    public async Task<List<ImagePack>> GetImagePacks(int page, int size, CancellationToken cancellationToken)
+        => await _dbContext.ImagePacks
+        .Skip((page-1) * size)
+        .Take(size)
+        .ToListAsync(cancellationToken);
 
     public async Task<bool> DeleteImagePack(ImagePack imagePack, CancellationToken cancellationToken)
     {
