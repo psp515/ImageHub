@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace ImageHub.Api.Features.Images.GetImage;
+﻿namespace ImageHub.Api.Features.Images.GetImage;
 
 public class GetImageErrors
 {

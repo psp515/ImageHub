@@ -1,5 +1,6 @@
-﻿
+﻿using ImageHub.Api.Contracts.Image.GetImage;
 using ImageHub.Api.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.GetImage;
 
@@ -7,14 +8,17 @@ public class GetImageEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/images/{id:guid}", async (Guid id, ISender sender) =>
-        {
-            var query = new GetImageQuery { Id = id };
+        app.MapGet("/api/images/{id:guid}", Get).WithTags(ImagesExtensions.Name);
+    }
 
-            var result = await sender.Send(query);    
+    [ProducesResponseType(typeof(GetImageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IResult> Get(Guid id, ISender sender)
+    {
+        var query = new GetImageQuery { Id = id };
 
-            return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
+        var result = await sender.Send(query);
 
-        }).WithTags(ImagesExtensions.Name);
+        return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
     }
 }

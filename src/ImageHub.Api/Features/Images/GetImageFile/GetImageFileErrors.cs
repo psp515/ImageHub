@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace ImageHub.Api.Features.Images.GetImageFile;
+﻿namespace ImageHub.Api.Features.Images.GetImageFile;
 
 public class GetImageFileErrors
 {
@@ -9,7 +7,4 @@ public class GetImageFileErrors
 
     public static Error ImageNotFoundInStorage
         => Error.NotFound("Image.GetFile.NotFound.Storage");
-
-    public static Error ValidationFailed(FluentValidation.Results.ValidationResult validationResult)
-        => Error.Validation("Image.GetFile.Validation", validationResult.ToString());
 }
