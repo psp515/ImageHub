@@ -6,6 +6,6 @@ public interface IImagePackRepository
     Task<bool> AddImagePack(ImagePack imagePack, CancellationToken cancellationToken);
     Task<bool> UpdateImagePack(ImagePack imagePack, CancellationToken cancellationToken);
     Task<ImagePack?> GetImagePackById(Guid id, CancellationToken cancellationToken);
-    Task<List<ImagePack>> GetImagePacksAsync(CancellationToken cancellationToken);
+    Task<List<ImagePack>> GetImagePacks(int page, int size, CancellationToken cancellationToken);
     Task<bool> DeleteImagePack(ImagePack imagePack, CancellationToken cancellationToken);
 }
