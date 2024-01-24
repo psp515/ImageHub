@@ -7,7 +7,9 @@ public class UpdateImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPatch("/api/imagepacks/{id}", async (Guid id, UpdateImagePackRequest request, ISender sender) =>
+        app.MapPatch("/api/imagepacks/{id:guid}", async (Guid id, 
+            UpdateImagePackRequest request, 
+            ISender sender) =>
         {
             var command = new UpdateImagePackCommand
             {

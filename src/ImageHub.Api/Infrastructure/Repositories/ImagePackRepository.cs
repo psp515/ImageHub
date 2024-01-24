@@ -26,7 +26,7 @@ public class ImagePackRepository(ApplicationDbContext dbContext) : IImagePackRep
             .AnyAsync(x => x.Name == name, cancellationToken);
     }
 
-    public async Task<ImagePack?> GetImagePackByIdAsync(Guid id, CancellationToken cancellationToken) 
+    public async Task<ImagePack?> GetImagePackById(Guid id, CancellationToken cancellationToken) 
         => await _dbContext.ImagePacks.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public async Task<List<ImagePack>> GetImagePacksAsync(CancellationToken cancellationToken)

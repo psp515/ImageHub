@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ImageHub.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240106173116_ModelCreation")]
-    partial class ModelCreation
+    [Migration("20240123194540_Images")]
+    partial class Images
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,6 @@ namespace ImageHub.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<byte[]>("Bytes")
-                        .IsRequired()
-                        .HasColumnType("bytea");
-
                     b.Property<DateTime>("CreatedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -45,23 +41,24 @@ namespace ImageHub.Api.Migrations
                     b.Property<DateTime>("EditedAtUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("FileExtension")
+                    b.Property<string>("FileType")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ImageStoreKey")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Size")
-                        .HasColumnType("numeric");
+                    b.Property<Guid?>("PackId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("PackId");
 
                     b.ToTable("Images", (string)null);
                 });
@@ -134,11 +131,11 @@ namespace ImageHub.Api.Migrations
 
             modelBuilder.Entity("ImageHub.Api.Entities.Image", b =>
                 {
-                    b.HasOne("ImageHub.Api.Entities.ImagePack", "Group")
+                    b.HasOne("ImageHub.Api.Entities.ImagePack", "Pack")
                         .WithMany("Images")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("PackId");
 
-                    b.Navigation("Group");
+                    b.Navigation("Pack");
                 });
 
             modelBuilder.Entity("ImageHub.Api.Entities.Thumbnail", b =>

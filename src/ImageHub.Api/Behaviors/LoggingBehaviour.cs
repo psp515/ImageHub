@@ -7,10 +7,7 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var logId = Guid.NewGuid();
-
-        logger.LogInformation("Logging Id: {@LogId}, Request Type: {@RequestName}, Time: {@DateTimeUtc}, Started processing.",
-                logId,
+        logger.LogInformation("Request Type: {@RequestName}, Time: {@DateTimeUtc}, Started processing.",
                 typeof(TRequest).Name,
                 DateTime.UtcNow);
 
@@ -18,8 +15,7 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
 
         if (response.IsFailure)
         {
-            logger.LogError("Logging Id: {@LogId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with error {@Error}",
-                logId,
+            logger.LogError("Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with error {@Error}",
                 typeof(TRequest).Name,
                 DateTime.UtcNow,
                 response.Error);
@@ -27,8 +23,7 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRe
             return response;
         }
 
-        logger.LogInformation("Logging Id: {@LogId}, Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with success",
-            logId,
+        logger.LogInformation("Request Type: {@RequestName} Time: {@DateTimeUtc}, finished processing with success",
             typeof(TRequest).Name,
             DateTime.UtcNow);
 

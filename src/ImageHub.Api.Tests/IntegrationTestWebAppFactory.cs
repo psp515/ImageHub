@@ -1,10 +1,11 @@
-﻿using ImageHub.Api.Infrastructure.Persistence;
+﻿using ImageHub.Api.Features.Images.Repositories;
+using ImageHub.Api.Infrastructure.Persistence;
+using ImageHub.Api.Tests.Mocks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
 
 namespace ImageHub.Api.Tests;
 
@@ -28,6 +29,17 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(ConnectionString));
+
+            var imageStoreType = typeof(IImageStoreRepository);
+
+            descriptor = services
+                .SingleOrDefault(s => s.ServiceType == imageStoreType);
+
+            if (descriptor is not null)
+                services.Remove(descriptor);
+
+            services.AddScoped<IImageStoreRepository, ImageStoreMock>();
+
         });
     }
 

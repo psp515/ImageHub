@@ -2,5 +2,5 @@
 
 public class DeleteImagePackCommand : IRequest<Result<Guid>>
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.Empty;
 }

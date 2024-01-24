@@ -4,7 +4,7 @@ namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
 public class UpdateImagePackErrors
 {
-    public static Error ValidationFailed(ValidationResult result) 
+    public static Error ValidationFailed(FluentValidation.Results.ValidationResult result) 
         => Error.Validation("ImagePack.Edit.Validation", result.ToString());
 
     public static Error NotFound

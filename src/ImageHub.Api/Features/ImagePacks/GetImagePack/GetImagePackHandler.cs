@@ -4,11 +4,9 @@ namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 
 public class GetImagePackHandler(IImagePackRepository repository) : IRequestHandler<GetImagePackQuery, Result<GetImagePackResponse>>
 {
-    private readonly IImagePackRepository _repository = repository;
-
     public async Task<Result<GetImagePackResponse>> Handle(GetImagePackQuery request, CancellationToken cancellationToken)
     {
-        var imagePack = await _repository.GetImagePackByIdAsync(request.Id, cancellationToken);
+        var imagePack = await repository.GetImagePackById(request.Id, cancellationToken);
 
         if(imagePack is null)
         {
