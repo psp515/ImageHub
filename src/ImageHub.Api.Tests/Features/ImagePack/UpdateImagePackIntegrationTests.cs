@@ -28,7 +28,7 @@ public class UpdateImagePackIntegrationTests(IntegrationTestWebAppFactory factor
 
         //Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-        Assert.Equal(HttpStatusCode.NoContent, updateResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
         Assert.Equal(name, pack.Name);
         Assert.Equal(updateRequest.Description, pack.Description);

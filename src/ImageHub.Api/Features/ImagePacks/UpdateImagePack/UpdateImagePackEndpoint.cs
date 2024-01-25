@@ -26,6 +26,6 @@ public class UpdateImagePackEndpoint : ICarterModule
 
         var result = await sender.Send(command);
 
-        return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
+        return result.IsSuccess ? Results.Ok(result.Value) : result.ToResultsDetails();
     }
 }
