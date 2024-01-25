@@ -1,4 +1,5 @@
-﻿using ImageHub.Api.Extensions;
+﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
 
@@ -6,13 +7,18 @@ public class GetAntiforgeryEndpoiont : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/imagepacks/{id:guid}", async (Guid id, ISender service) =>
-        {
-            var query = new GetImagePackQuery { Id = id };
+        app.MapGet("/api/imagepacks/{id:guid}", Get)
+            .WithTags(ImagePacksExtensions.Name);
+    }
 
-            var result = await service.Send(query);
+    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IResult> Get(Guid id, ISender service)
+    {
+        var query = new GetImagePackQuery { Id = id };
 
-            return result.IsSuccess ? Results.Ok(result.Value) : result.ToResultsDetails();
-        }).WithTags(ImagePacksExtensions.Name);
+        var result = await service.Send(query);
+
+        return result.IsSuccess ? Results.Ok(result.Value) : result.ToResultsDetails();
     }
 }

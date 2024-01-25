@@ -1,7 +1,6 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
-using ImageHub.Api.Extensions;
-using ImageHub.Api.Shared;
 using Mapster;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
 
@@ -14,7 +13,8 @@ public class AddImagePackEndpoint : ICarterModule
     }
 
     [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Add(AddImagePackRequest request, ISender sender)
     {
         var command = request.Adapt<AddImagePackCommand>();

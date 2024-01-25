@@ -1,4 +1,5 @@
-﻿using ImageHub.Api.Extensions;
+﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.DeleteImagePack;
 
@@ -6,13 +7,18 @@ public class DeleteImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/imagepacks/{id:guid}", async (Guid id, ISender sender) =>
-        {
-            var command = new DeleteImagePackCommand { Id = id };
+        app.MapDelete("/api/imagepacks/{id:guid}", Delete)
+            .WithTags(ImagePacksExtensions.Name);
+    }
 
-            var result = await sender.Send(command);
+    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IResult> Delete(Guid id, ISender sender)
+    {
+        var command = new DeleteImagePackCommand { Id = id };
 
-            return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
-        }).WithTags(ImagePacksExtensions.Name);
+        var result = await sender.Send(command);
+
+        return result.IsSuccess ? Results.NoContent() : result.ToResultsDetails();
     }
 }
