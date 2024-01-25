@@ -1,5 +1,6 @@
 ﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
 using ImageHub.Api.Extensions;
+using ImageHub.Api.Shared;
 using Mapster;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
@@ -8,20 +9,25 @@ public class AddImagePackEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/imagepacks", async (AddImagePackRequest request, ISender sender) =>
+        app.MapPost("/api/imagepacks", Add)
+            .WithTags(ImagePacksExtensions.Name);
+    }
+
+    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<IResult> Add(AddImagePackRequest request, ISender sender)
+    {
+        var command = request.Adapt<AddImagePackCommand>();
+
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
         {
-            var command = request.Adapt<AddImagePackCommand>();
+            return result.ToResultsDetails();
+        }
 
-            var result = await sender.Send(command);
+        var response = new AddImagePackResponse(result.Value);
 
-            if (result.IsFailure)
-            {
-                return result.ToResultsDetails();
-            }
-
-            var response = new AddImagePackResponse(result.Value);
-
-            return Results.Created($"/api/imagepack/{result.Value}", response);
-        }).WithTags(ImagePacksExtensions.Name);
+        return Results.Created($"/api/imagepack/{result.Value}", response);
     }
 }
