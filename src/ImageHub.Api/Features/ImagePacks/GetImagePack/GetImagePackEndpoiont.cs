@@ -1,4 +1,4 @@
-﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
+﻿using ImageHub.Api.Contracts.ImagePacks.GetImagePack;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.GetImagePack;
@@ -11,7 +11,7 @@ public class GetAntiforgeryEndpoiont : ICarterModule
             .WithTags(ImagePacksExtensions.Name);
     }
 
-    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetImagePackResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IResult> Get(Guid id, ISender service)
     {

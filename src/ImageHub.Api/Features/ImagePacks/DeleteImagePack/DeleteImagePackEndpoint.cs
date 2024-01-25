@@ -1,4 +1,4 @@
-﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
+﻿using ImageHub.Api.Contracts.ImagePacks.DeleteImagePack;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.DeleteImagePack;
@@ -11,7 +11,7 @@ public class DeleteImagePackEndpoint : ICarterModule
             .WithTags(ImagePacksExtensions.Name);
     }
 
-    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DeleteImagePackResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IResult> Delete(Guid id, ISender sender)
     {

@@ -1,5 +1,4 @@
-﻿using ImageHub.Api.Contracts.Image.GetImage;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.GetImageFile;
 
@@ -12,7 +11,7 @@ public class GetImageFileEndpoint : ICarterModule
     
     }
 
-    [ProducesResponseType(typeof(GetImageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IResult> Get(Guid id, ISender sender)
     {

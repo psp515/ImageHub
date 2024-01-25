@@ -1,5 +1,4 @@
-﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
-using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
+﻿using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
@@ -12,7 +11,7 @@ public class UpdateImagePackEndpoint : ICarterModule
             .WithTags(ImagePacksExtensions.Name);
     }
 
-    [ProducesResponseType(typeof(AddImagePackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UpdateImagePackResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Update(Guid id,
