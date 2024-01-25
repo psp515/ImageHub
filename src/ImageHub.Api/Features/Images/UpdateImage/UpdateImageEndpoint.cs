@@ -1,6 +1,5 @@
 ﻿using ImageHub.Api.Contracts.Image.UpdateImage;
-using ImageHub.Api.Extensions;
-using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.UpdateImage;
 
@@ -11,6 +10,9 @@ public class UpdateImageEndpoint : ICarterModule
         app.MapPatch("/api/images/{id:guid}", Update).WithTags(ImagesExtensions.Name);
     }
 
+    [ProducesResponseType(typeof(UpdateImageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Update(Guid id,
             UpdateImageRequest request,
             ISender sender)

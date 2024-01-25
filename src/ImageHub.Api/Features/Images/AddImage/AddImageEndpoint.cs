@@ -1,6 +1,4 @@
 ﻿using ImageHub.Api.Contracts.Image.AddImage;
-using ImageHub.Api.Extensions;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageHub.Api.Features.Images.AddImage;
@@ -16,6 +14,7 @@ public class AddImageEndpoint : ICarterModule
     [ProducesResponseType(typeof(AddImageResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IResult> Add(ISender sender,
             [FromForm] AddImageRequest request,
             [FromQuery(Name = "pack")] string packId = "")

@@ -1,5 +1,4 @@
-﻿using ImageHub.Api.Contracts.Image.GetImage;
-using ImageHub.Api.Contracts.Image.GetImages;
+﻿using ImageHub.Api.Contracts.Image.GetImages;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +12,7 @@ public class GetImagesEndpoint : ICarterModule
             .WithTags(ImagesExtensions.Name);
     }
 
-    [ProducesResponseType(typeof(GetImageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetImagesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IResult> Get(ISender sender,
             Guid? packId = null,

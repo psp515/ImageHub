@@ -1,15 +1,17 @@
-﻿namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
+﻿using ImageHub.Api.Contracts.ImagePacks.UpdateImagePack;
 
-public class UpdateImagePackHandler(IImagePackRepository repository) : IRequestHandler<UpdateImagePackCommand, Result>
+namespace ImageHub.Api.Features.ImagePacks.AddImagePack;
+
+public class UpdateImagePackHandler(IImagePackRepository repository) : IRequestHandler<UpdateImagePackCommand, Result<UpdateImagePackResponse>>
 {
-    public async Task<Result> Handle(UpdateImagePackCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UpdateImagePackResponse>> Handle(UpdateImagePackCommand request, CancellationToken cancellationToken)
     { 
         var imagePack = await repository.GetImagePackById(request.Id, cancellationToken);
 
         if (imagePack is null)
         {
             var error = UpdateImagePackErrors.NotFound;
-            return Result.Failure(error);
+            return Result<UpdateImagePackResponse>.Failure(error);
         }
 
         imagePack.Description = request.Description;
@@ -17,6 +19,11 @@ public class UpdateImagePackHandler(IImagePackRepository repository) : IRequestH
 
         await repository.UpdateImagePack(imagePack, cancellationToken);
 
-        return Result.Success();
+        var response = new UpdateImagePackResponse
+        {
+            Id = request.Id,
+        };
+
+        return Result<UpdateImagePackResponse>.Success(response);
     }
 }
