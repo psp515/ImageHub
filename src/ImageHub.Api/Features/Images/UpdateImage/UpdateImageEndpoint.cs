@@ -27,7 +27,9 @@ public class UpdateImageEndpoint : ICarterModule
 
         if (result.IsFailure)
             return result.ToResultsDetails();
-        
-        return Results.Ok(result.Value);
+
+        var response = result.Value;
+
+        return Results.Ok(response);
     }
 }

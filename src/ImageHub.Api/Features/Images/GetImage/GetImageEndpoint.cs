@@ -19,6 +19,6 @@ public class GetImageEndpoint : ICarterModule
 
         var result = await sender.Send(query);
 
-        return result.IsSuccess ? Results.Ok(result) : result.ToResultsDetails();
+        return result.IsSuccess ? Results.Ok(result.Value) : result.ToResultsDetails();
     }
 }

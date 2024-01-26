@@ -40,8 +40,6 @@ public class GetImagePacksIntegrationTests(IntegrationTestWebAppFactory factory)
 
         var getResponse = await _client.GetAsync($"/api/imagepacks?page={2}");
 
-        var packs = await TestsCommon.Deserialize<ImagePacksDto>(getResponse);
-
         //Assert
 
         Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
