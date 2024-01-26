@@ -38,8 +38,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             if (descriptor is not null)
                 services.Remove(descriptor);
 
-            services.AddScoped<IImageStoreRepository, ImageStoreMock>();
-
+            services.AddSingleton<IImageStoreRepository, ImageStoreMock>();
         });
     }
 
@@ -57,7 +56,6 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             throw new InvalidOperationException("PostgreSQL container is not running.");
         }
     }
-
 
     public new Task DisposeAsync()
     {

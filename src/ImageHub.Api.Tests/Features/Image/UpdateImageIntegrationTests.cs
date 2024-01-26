@@ -10,7 +10,6 @@ public class UpdateImageIntegrationTests(IntegrationTestWebAppFactory factory) :
     public async Task UpdateImage()
     {
         //Arrange
-
         var updateRequest = new UpdateImageRequest()
         {
             Description = "Updated Test Image Description."
