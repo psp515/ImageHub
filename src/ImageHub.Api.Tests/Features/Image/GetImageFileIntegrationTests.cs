@@ -14,7 +14,7 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
     {
         // Arrange
         var image = await GetPng();
-        var imageContent = image.First(c => c.Headers.ContentDisposition.Name == "image");
+        var imageContent = image.First(c => c.Headers.ContentDisposition!.Name == "image");
         using var imageStream = await imageContent.ReadAsStreamAsync();
 
         // Act
@@ -37,7 +37,7 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
     {
         // Arrange
         var image = await GetJpeg();
-        var imageContent = image.First(c => c.Headers.ContentDisposition.Name == "image");
+        var imageContent = image.First(c => c.Headers.ContentDisposition!.Name == "image");
         using var imageStream = await imageContent.ReadAsStreamAsync();
 
         // Act
@@ -66,7 +66,7 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    private bool AreStreamsEqual(Stream stream1, Stream stream2)
+    private static bool AreStreamsEqual(Stream stream1, Stream stream2)
     {
         const int bufferSize = 4096;
         byte[] buffer1 = new byte[bufferSize];
@@ -76,6 +76,11 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
         {
             int bytesRead1 = stream1.Read(buffer1, 0, bufferSize);
             int bytesRead2 = stream2.Read(buffer2, 0, bufferSize);
+
+            if (bytesRead1 != bytesRead2)
+            {
+                return false;
+            }
 
             if (bytesRead1 == 0)
             {

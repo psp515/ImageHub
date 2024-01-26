@@ -45,7 +45,6 @@ public class UpdateImageIntegrationTests(IntegrationTestWebAppFactory factory) :
 
         //Act
         var response = await _client.PostAsync("/api/images", formContent);
-        var idObject = await TestsCommon.Deserialize<IdResponse>(response);
         var updateResponse = await _client.PatchAsync($"/api/images/{Guid.NewGuid()}", updateContent);
 
         //Assert
