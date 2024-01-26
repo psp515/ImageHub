@@ -79,7 +79,7 @@ public class GetImagesIntegrationTests(IntegrationTestWebAppFactory factory) :
         Assert.Equal(HttpStatusCode.OK, getResponse2.StatusCode);
         Assert.True(images2!.Images.Count == 1);
 
-        Assert.True(images1.Images[0].Name == name || images2.Images[0].Name == name);
+        Assert.True(images1.Images[0].Name != images2.Images[0].Name);
     }
 
 }
