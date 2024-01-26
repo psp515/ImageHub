@@ -21,9 +21,9 @@ public class GetImagesEndpoint : ICarterModule
     {
         var query = new GetImagesQuery
         {
-            PackId = packId ?? Guid.Empty,
-            Page = 1,
-            Size = 1
+            PackId = packId,
+            Page = page,
+            Size = size
         };
 
         var result = await sender.Send(query);
@@ -40,6 +40,6 @@ public class GetImagesEndpoint : ICarterModule
             Images = dtos
         };
 
-        return Results.Ok(result.Value);
+        return Results.Ok(response);
     }
 }
