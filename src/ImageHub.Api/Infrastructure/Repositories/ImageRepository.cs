@@ -32,7 +32,7 @@ public class ImageRepository(ApplicationDbContext _dbContext) : IImageRepository
         return await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == guid, cancellationToken);
     }
 
-    public async Task<List<Image>> GetImages(Guid packId, int page, int size, CancellationToken cancellationToken)
+    public async Task<List<Image>> GetImages(Guid? packId, int page, int size, CancellationToken cancellationToken)
     {
         return await _dbContext.Images
             .Where(x => x.PackId == packId)
