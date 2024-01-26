@@ -2,7 +2,7 @@
 
 public interface IThumbnailRepository
 {
-    Task<Thumbnail?> CreateThumbnail(Image image);
+    Task<Thumbnail?> CreateThumbnail(Image image, CancellationToken cancellationToken);
     Task<bool> ThumbanailProcessed(Guid id, byte[] bytes);
     Task<bool> ThumbanilStartsProcessing(Guid id);
     Task<bool> ThumbanailProcessingFailed(Guid id);

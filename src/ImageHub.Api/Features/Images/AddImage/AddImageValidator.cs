@@ -7,8 +7,7 @@ public class AddImageValidator : AbstractValidator<AddImageCommand>
     private static readonly string[] AllowedFileTypes = 
     [ 
         "image/jpeg", 
-        "image/png", 
-        "image/svg" 
+        "image/png"
     ];
 
     private static readonly int MaxKiloBytes = 64;

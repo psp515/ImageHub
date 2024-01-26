@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ImageHub.Api.Entities;
 
@@ -7,12 +8,12 @@ public class Thumbnail
     [Key]
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = string.Empty;
     public byte[] Bytes { get; set; } = [];
-    public string Description { get; set; } = string.Empty;
     public string FileExtension { get; set; } = string.Empty;
-    public decimal Size { get; set; }
+    public ProcessingStatus ProcessingStatus { get; set; } = ProcessingStatus.NotStarted;
 
+    public Guid ImageId { get; set; }
+    [ForeignKey("ImageId")]
     public Image Image { get; set; } = default!;
 
     public DateTime CreatedOnUtc { get; set; } = DateTime.UtcNow;
