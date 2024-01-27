@@ -2,11 +2,11 @@
 
 public interface IThumbnailRepository
 {
-    Task<Thumbnail?> CreateThumbnail(Image image, CancellationToken cancellationToken);
-    Task<bool> ThumbanailProcessed(Guid id, byte[] bytes);
-    Task<bool> ThumbanilStartsProcessing(Guid id);
-    Task<bool> ThumbanailProcessingFailed(Guid id);
+    Task<int> ThumbanailProcessed(Thumbnail thumbnail, byte[] bytes, CancellationToken cancellationToken);
+    Task<int> ThumbanilStartsProcessing(Thumbnail thumbnail, CancellationToken cancellationToken);
+    Task<int> ThumbanailProcessingFailed(Thumbnail thumbnail, CancellationToken cancellationToken);
 
+    Task<Thumbnail?> AddThumbnailBasedOnImage(Image image, CancellationToken cancellationToken);
     Task<List<Thumbnail>> GetThumbnails(Guid? imagePackId,int page, int size, CancellationToken cancellationToken);
     Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken);
 }

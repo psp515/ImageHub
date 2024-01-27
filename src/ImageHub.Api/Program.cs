@@ -2,6 +2,7 @@ using FluentValidation;
 using ImageHub.Api.Behaviors;
 using ImageHub.Api.Features.ImagePacks;
 using ImageHub.Api.Features.Images.Repositories;
+using ImageHub.Api.Features.Thumbnails;
 using ImageHub.Api.Infrastructure;
 using ImageHub.Api.Infrastructure.Persistence;
 using ImageHub.Api.Infrastructure.Repositories;
@@ -24,6 +25,7 @@ builder.Services.AddAntiforgery(options => options.FormFieldName = "csrfToken");
 
 builder.Services.AddScoped<IImagePackRepository, ImagePackRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IThumbnailRepository, ThumbnailRepository>();
 builder.Services.AddScoped<IImageStoreRepository, FileRepository>();
 
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));

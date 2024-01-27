@@ -1,3 +1,3 @@
 ﻿namespace ImageHub.Api.Contracts.Image.AddImage;
 
-public record AddImageResponse(Guid Id);
+public record AddImageResponse(Guid Id, Guid ThumbnailId);

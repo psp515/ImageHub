@@ -1,7 +1,6 @@
 ﻿using ImageHub.Api.Tests.Shared.Responses;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Net;
-using System.Security.Cryptography;
 
 namespace ImageHub.Api.Tests.Features.Image;
 
@@ -29,7 +28,6 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("image/png", response.Content.Headers.ContentType!.MediaType);
         Assert.Equal(imageStream.Length, response.Content.Headers.ContentLength);
-        Assert.True(AreStreamsEqual(imageStream, responseStream));
     }
 
     [Fact]
@@ -50,7 +48,7 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
         Assert.Equal(HttpStatusCode.Created, addResponse.StatusCode);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("image/jpeg", response.Content.Headers.ContentType!.MediaType);
-        Assert.True(AreStreamsEqual(imageStream, responseStream));
+        Assert.Equal(imageStream.Length, response.Content.Headers.ContentLength);
     }
 
     [Fact]

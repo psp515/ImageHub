@@ -8,7 +8,7 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
 {
     public static readonly string ThumbnailExtensions = "image/png";
 
-    public async Task<Thumbnail?> CreateThumbnail(Image image, CancellationToken cancellationToken)
+    public async Task<Thumbnail?> AddThumbnailBasedOnImage(Image image, CancellationToken cancellationToken)
     {
         var thumbnail = new Thumbnail
         {
@@ -28,10 +28,8 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
     }
 
     public async Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken)
-    {
-        return await dbContext.Thumbnails
+        => await dbContext.Thumbnails
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-    }
 
     public async Task<List<Thumbnail>> GetThumbnails(Guid? imagePackId, int page, int size, CancellationToken cancellationToken)
         => await dbContext.Thumbnails
@@ -40,18 +38,28 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
             .Take(size)
             .ToListAsync(cancellationToken);
 
-    public Task<bool> ThumbanailProcessed(Guid id, byte[] bytes)
+    public async Task<int> ThumbanailProcessed(Thumbnail thumbnail, byte[] bytes, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        thumbnail.Bytes = bytes;
+        thumbnail.ProcessingStatus = ProcessingStatus.Success;
+        thumbnail.EditedAtUtc = DateTime.UtcNow;
+
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<bool> ThumbanailProcessingFailed(Guid id)
+    public async Task<int> ThumbanailProcessingFailed(Thumbnail thumbnail, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        thumbnail.ProcessingStatus = ProcessingStatus.Failure;
+        thumbnail.EditedAtUtc = DateTime.UtcNow;
+
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<bool> ThumbanilStartsProcessing(Guid id)
+    public async Task<int> ThumbanilStartsProcessing(Thumbnail thumbnail, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        thumbnail.ProcessingStatus = ProcessingStatus.Processing;
+        thumbnail.EditedAtUtc = DateTime.UtcNow;
+
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

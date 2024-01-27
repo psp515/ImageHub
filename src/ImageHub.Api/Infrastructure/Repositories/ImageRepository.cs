@@ -6,10 +6,10 @@ namespace ImageHub.Api.Infrastructure.Repositories;
 
 public class ImageRepository(ApplicationDbContext dbContext) : IImageRepository
 {
-    public async Task<bool> AddImage(Image image, CancellationToken cancellationToken)
+    public async Task<int> AddImage(Image image, CancellationToken cancellationToken)
     {
         dbContext.Add(image);
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<bool> UpdateImage(Image image, CancellationToken cancellationToken)
