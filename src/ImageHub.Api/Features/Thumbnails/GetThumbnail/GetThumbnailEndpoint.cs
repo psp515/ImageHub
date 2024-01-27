@@ -7,7 +7,7 @@ public class GetThumbnailEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/thumbnails/{id:guid}", Get)
+        app.MapGet("/api/thumbnails/{id:guid}", Get)
             .WithTags(ThumbnailExtensions.Name);
     }
 

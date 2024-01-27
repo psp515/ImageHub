@@ -6,7 +6,7 @@ public interface IThumbnailRepository
     Task<int> ThumbanilStartsProcessing(Thumbnail thumbnail, CancellationToken cancellationToken);
     Task<int> ThumbanailProcessingFailed(Thumbnail thumbnail, CancellationToken cancellationToken);
 
-    Task<Thumbnail?> AddThumbnailBasedOnImage(Image image, CancellationToken cancellationToken);
+    Task<int> AddThumbnailBasedOnImage(Thumbnail thumbnail, CancellationToken cancellationToken);
     Task<List<Thumbnail>> GetThumbnails(Guid? imagePackId,int page, int size, CancellationToken cancellationToken);
     Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken);
 }

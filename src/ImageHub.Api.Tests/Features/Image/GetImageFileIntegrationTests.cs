@@ -63,35 +63,4 @@ public class GetImageFileIntegrationTests(IntegrationTestWebAppFactory factory) 
         // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
-
-    private static bool AreStreamsEqual(Stream stream1, Stream stream2)
-    {
-        const int bufferSize = 4096;
-        byte[] buffer1 = new byte[bufferSize];
-        byte[] buffer2 = new byte[bufferSize];
-
-        while (true)
-        {
-            int bytesRead1 = stream1.Read(buffer1, 0, bufferSize);
-            int bytesRead2 = stream2.Read(buffer2, 0, bufferSize);
-
-            if (bytesRead1 != bytesRead2)
-            {
-                return false;
-            }
-
-            if (bytesRead1 == 0)
-            {
-                return true;
-            }
-
-            for (int i = 0; i < bytesRead1; i++)
-            {
-                if (buffer1[i] != buffer2[i])
-                {
-                    return false;
-                }
-            }
-        }
-    }
 }

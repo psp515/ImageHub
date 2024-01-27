@@ -6,25 +6,10 @@ namespace ImageHub.Api.Infrastructure.Repositories;
 
 public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRepository
 {
-    public static readonly string ThumbnailExtensions = "image/png";
-
-    public async Task<Thumbnail?> AddThumbnailBasedOnImage(Image image, CancellationToken cancellationToken)
+    public async Task<int> AddThumbnailBasedOnImage(Thumbnail thumbnail, CancellationToken cancellationToken)
     {
-        var thumbnail = new Thumbnail
-        {
-            Id = Guid.NewGuid(),
-            ImageId = image.Id,
-            Image = image,
-            ProcessingStatus = ProcessingStatus.NotStarted,
-            Bytes = [],
-            FileExtension = ThumbnailExtensions,
-            CreatedOnUtc = DateTime.UtcNow,
-            EditedAtUtc = DateTime.UtcNow
-        };
-
-        var status = await dbContext.Thumbnails.AddAsync(thumbnail, cancellationToken);
-
-        return status.Entity;
+        dbContext.Add(thumbnail);
+        return await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken)

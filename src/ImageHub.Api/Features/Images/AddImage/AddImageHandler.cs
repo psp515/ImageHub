@@ -1,11 +1,8 @@
 ﻿using ImageHub.Api.Contracts.Image.AddImage;
-using ImageHub.Api.Entities;
 using ImageHub.Api.Features.ImagePacks;
 using ImageHub.Api.Features.Images.Repositories;
 using ImageHub.Api.Features.Thumbnails;
 using ImageHub.Api.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System.Transactions;
 
 namespace ImageHub.Api.Features.Images.AddImage;
 
@@ -16,6 +13,9 @@ public class AddImageHandler(IImageRepository repository,
                              ApplicationDbContext dbContext) 
     : IRequestHandler<AddImageCommand, Result<AddImageResponse>>
 {
+
+    public static readonly string ThumbnailExtensions = "image/png";
+
     public async Task<Result<AddImageResponse>> Handle(AddImageCommand request, CancellationToken cancellationToken)
     {
         var exists = await repository.ExistsByName(request.Name, cancellationToken);
@@ -74,9 +74,21 @@ public class AddImageHandler(IImageRepository repository,
                 return Result<AddImageResponse>.Failure(error);
             }
 
-            var thumbnail = await thumbnailRepository.AddThumbnailBasedOnImage(image, cancellationToken);
+            var thumbnail = new Thumbnail
+            {
+                Id = Guid.NewGuid(),
+                ImageId = image.Id,
+                Image = image,
+                ProcessingStatus = ProcessingStatus.NotStarted,
+                Bytes = [],
+                FileExtension = ThumbnailExtensions,
+                CreatedOnUtc = DateTime.UtcNow,
+                EditedAtUtc = DateTime.UtcNow
+            };
 
-            if (thumbnail is null)
+            var thumbnailStatus = await thumbnailRepository.AddThumbnailBasedOnImage(thumbnail, cancellationToken);
+
+            if (thumbnailStatus < 1)
             {
                 transaction.Rollback();
                 var error = AddImageErrors.TransactionFailed;
