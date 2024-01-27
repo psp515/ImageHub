@@ -10,6 +10,7 @@ public class AddImageHandler(IImageRepository repository,
                              IImageStoreRepository imageStoreRepository,
                              IImagePackRepository imagePackRepository,
                              IThumbnailRepository thumbnailRepository,
+                             IEventBus eventBus,
                              ApplicationDbContext dbContext) 
     : IRequestHandler<AddImageCommand, Result<AddImageResponse>>
 {
@@ -96,6 +97,9 @@ public class AddImageHandler(IImageRepository repository,
             }
 
             transaction.Commit();
+
+            //TODO: Enable when event bus is ready
+            //await eventBus.Publish(new AddImageEvent(thumbnail.Id, image.ImageStoreKey), cancellationToken);
 
             return Result<AddImageResponse>.Success(new(image.Id, thumbnail.Id));
         }
