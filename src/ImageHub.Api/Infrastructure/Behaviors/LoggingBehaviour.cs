@@ -1,8 +1,8 @@
-﻿namespace ImageHub.Api.Behaviors;
+﻿namespace ImageHub.Api.Infrastructure.Behaviors;
 
-public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRequest, TResponse>> logger) 
-    : IPipelineBehavior<TRequest, TResponse> 
-    where TRequest : IRequest<TResponse> 
+public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
     where TResponse : Result
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
