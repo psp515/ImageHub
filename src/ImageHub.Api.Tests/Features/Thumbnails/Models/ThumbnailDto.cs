@@ -10,8 +10,10 @@ public class ThumbnailDto
     [JsonPropertyName("imageId")]
     public Guid ImageId { get; set; }
 
-    [JsonPropertyName("bytes")]
-    public byte[] Bytes { get; set; } = [];
+    [JsonPropertyName("encoding")]
+    public string Encoding { get; set; } = string.Empty;
+    [JsonPropertyName("encodedImage")] 
+    public string EncodedImage { get; set; } = string.Empty;
     [JsonPropertyName("fileExtension")]
     public string FileExtension { get; set; } = string.Empty;
     [JsonPropertyName("processingStatus")]
