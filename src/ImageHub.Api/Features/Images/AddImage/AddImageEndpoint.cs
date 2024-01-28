@@ -8,7 +8,7 @@ public class AddImageEndpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/api/images", Add)
-            .WithTags(ImagesExtensions.Name).DisableAntiforgery();
+            .WithTags(ImagesExtensions.Name);
     }
 
     [ProducesResponseType(typeof(AddImageResponse), StatusCodes.Status201Created)]

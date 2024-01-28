@@ -100,7 +100,7 @@ public class AddImageHandler(IImageRepository repository,
 
             return Result<AddImageResponse>.Success(new(image.Id, thumbnail.Id));
         }
-        catch (Exception)
+        catch (Exception e)
         {
             transaction.Rollback();
             var error = AddImageErrors.TransactionFailed;
