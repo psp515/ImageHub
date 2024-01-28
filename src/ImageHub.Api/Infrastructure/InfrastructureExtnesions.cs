@@ -38,8 +38,10 @@ public static class InfrastructureExtnesions
 
         builder.Services.Configure<MessageBrokerSettings>(
             builder.Configuration.GetSection("MessageBroker"));
+
         builder.Services.AddSingleton(sp 
             => sp.GetRequiredService<IOptions<MessageBrokerSettings>>().Value);
+
         builder.Services.AddMassTransit(bus => {
 
             bus.SetKebabCaseEndpointNameFormatter();
@@ -49,6 +51,12 @@ public static class InfrastructureExtnesions
             bus.UsingRabbitMq((context,config) => {                 
                 
                 var settings = context.GetRequiredService<MessageBrokerSettings>();
+
+                config.ReceiveEndpoint("addimage", endpoint =>
+                {
+                    endpoint.ConfigureConsumer<AddImageEventConsumer>(context);
+                });
+
                 config.Host(new Uri(settings.Host), host =>
                 {
                     host.Username(settings.Username);

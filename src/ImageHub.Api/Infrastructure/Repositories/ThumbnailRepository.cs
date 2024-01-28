@@ -23,28 +23,43 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
             .Take(size)
             .ToListAsync(cancellationToken);
 
-    public async Task<int> ThumbanailProcessed(Thumbnail thumbnail, byte[] bytes, CancellationToken cancellationToken)
+    public async Task<int> ThumbanailProcessed(Guid id, byte[] bytes)
     {
+        var thumbnail = await GetThumbnail(id, default);
+
+        if (thumbnail is null)
+            return 0;
+        
         thumbnail.Bytes = bytes;
         thumbnail.ProcessingStatus = ProcessingStatus.Success;
         thumbnail.EditedAtUtc = DateTime.UtcNow;
 
-        return await dbContext.SaveChangesAsync(cancellationToken);
+        return await dbContext.SaveChangesAsync();
     }
 
-    public async Task<int> ThumbanailProcessingFailed(Thumbnail thumbnail, CancellationToken cancellationToken)
+    public async Task<int> ThumbanailProcessingFailed(Guid id)
     {
+        var thumbnail = await GetThumbnail(id, default);
+
+        if (thumbnail is null)
+            return 0;
+        
         thumbnail.ProcessingStatus = ProcessingStatus.Failure;
         thumbnail.EditedAtUtc = DateTime.UtcNow;
 
-        return await dbContext.SaveChangesAsync(cancellationToken);
+        return await dbContext.SaveChangesAsync();
     }
 
-    public async Task<int> ThumbanilStartsProcessing(Thumbnail thumbnail, CancellationToken cancellationToken)
+    public async Task<int> ThumbnailProcessing(Guid id)
     {
+        var thumbnail = await GetThumbnail(id, default);
+
+        if (thumbnail is null)
+            return 0;
+        
         thumbnail.ProcessingStatus = ProcessingStatus.Processing;
         thumbnail.EditedAtUtc = DateTime.UtcNow;
 
-        return await dbContext.SaveChangesAsync(cancellationToken);
+        return await dbContext.SaveChangesAsync();
     }
 }

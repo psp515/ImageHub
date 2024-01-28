@@ -27,8 +27,8 @@ services:
       - 5432:5432
   imagehub.rabbitmq:
     image: rabbitmq:3-management
-    container_name: RabbitMQ
-    hostname: rabbitmq
+    container_name: Queue
+    hostname: imagehub-queue
     ports:
       - 15672:15672
       - 5672:5672

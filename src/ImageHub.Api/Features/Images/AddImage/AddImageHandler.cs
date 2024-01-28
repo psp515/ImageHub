@@ -15,8 +15,6 @@ public class AddImageHandler(IImageRepository repository,
     : IRequestHandler<AddImageCommand, Result<AddImageResponse>>
 {
 
-    public static readonly string ThumbnailExtensions = "image/png";
-
     public async Task<Result<AddImageResponse>> Handle(AddImageCommand request, CancellationToken cancellationToken)
     {
         var exists = await repository.ExistsByName(request.Name, cancellationToken);
@@ -82,7 +80,7 @@ public class AddImageHandler(IImageRepository repository,
                 Image = image,
                 ProcessingStatus = ProcessingStatus.NotStarted,
                 Bytes = [],
-                FileExtension = ThumbnailExtensions,
+                FileExtension = ThumbnailExtensions.ThumbnailExtension,
                 CreatedOnUtc = DateTime.UtcNow,
                 EditedAtUtc = DateTime.UtcNow
             };
@@ -98,8 +96,7 @@ public class AddImageHandler(IImageRepository repository,
 
             transaction.Commit();
 
-            //TODO: Enable when event bus is ready
-            //await eventBus.Publish(new AddImageEvent(thumbnail.Id, image.ImageStoreKey), cancellationToken);
+            await eventBus.Publish(new AddImageEvent(thumbnail.Id, image.ImageStoreKey), cancellationToken);
 
             return Result<AddImageResponse>.Success(new(image.Id, thumbnail.Id));
         }
