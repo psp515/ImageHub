@@ -1,4 +1,5 @@
 ﻿using ImageHub.Api.Contracts.Thumbnails.GetThumbnail;
+using System.Buffers.Text;
 
 namespace ImageHub.Api.Features.Thumbnails.GetThumbnail;
 
@@ -14,10 +15,13 @@ public class GetThumbnailHandler(IThumbnailRepository repository) : IRequestHand
             return Result<GetThumbnailResponse>.Failure(error);
         }
 
+
+
         var response = new GetThumbnailResponse
         {
             Id = thumbnail.Id,
-            Bytes = thumbnail.Bytes,
+            Encoding = ThumbnailExtensions.BaseEncoding,
+            EncodedImage = Convert.ToBase64String(thumbnail.Bytes),
             FileExtension = thumbnail.FileExtension,
             ImageId = thumbnail.ImageId,
             ProcessingStatus = thumbnail.ProcessingStatus,

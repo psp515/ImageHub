@@ -1,4 +1,5 @@
 ﻿using ImageHub.Api.Contracts.Thumbnails.GetThumbnails;
+using ImageHub.Api.Entities;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +33,17 @@ public class GetThumbnailsEndpoint : ICarterModule
             return result.ToResultsDetails();
 
         var dtos = result.Value
-            .Select(x => x.Adapt<ThumbnailDto>())
+            .Select(x => new ThumbnailDto
+            {
+                Id = x.Id,
+                Encoding = ThumbnailExtensions.BaseEncoding,
+                EncodedImage = Convert.ToBase64String(x.Bytes),
+                FileExtension = x.FileExtension,
+                ImageId = x.ImageId,
+                ProcessingStatus = x.ProcessingStatus,
+                CreatedOnUtc = x.CreatedOnUtc,
+                EditedAtUtc = x.EditedAtUtc
+            })
             .ToList();
 
         var response = new GetThumbnailsResponse
