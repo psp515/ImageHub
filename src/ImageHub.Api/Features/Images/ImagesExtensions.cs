@@ -1,6 +1,16 @@
-﻿namespace ImageHub.Api.Features.Images;
+﻿using ImageHub.Api.Features.Images.Repositories;
+using ImageHub.Api.Infrastructure.Repositories;
 
-public class ImagesExtensions
+namespace ImageHub.Api.Features.Images;
+
+public static class ImagesExtensions
 {
     public static string Name => "Images Controller";
+
+    public static WebApplicationBuilder RegisterImagesServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IImageRepository, ImageRepository>();
+        builder.Services.AddScoped<IImageStoreRepository, FileRepository>();
+        return builder;
+    }
 }

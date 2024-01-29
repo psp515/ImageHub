@@ -11,6 +11,9 @@ services:
       imagehub.database:
         condition: service_healthy
         restart: true
+      imagehub.rabbitmq:
+        condition: service_healthy
+        restart: true
   imagehub.database:
     image: postgres:latest
     container_name: Database
@@ -22,6 +25,16 @@ services:
       - ./.containers/database:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    build:
-      context: .
-      dockerfile: src\ImageHub.Api\Dockerfile
+  imagehub.rabbitmq:
+    image: rabbitmq:3-management
+    container_name: Queue
+    hostname: imagehub-queue
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./.containers/rabbitmq/data:/var/lib/rabbitmq
+      - ./.containers/rabbitmq/log:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

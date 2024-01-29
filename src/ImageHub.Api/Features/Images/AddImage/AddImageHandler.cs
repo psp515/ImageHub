@@ -10,11 +10,10 @@ public class AddImageHandler(IImageRepository repository,
                              IImageStoreRepository imageStoreRepository,
                              IImagePackRepository imagePackRepository,
                              IThumbnailRepository thumbnailRepository,
+                             IEventBus eventBus,
                              ApplicationDbContext dbContext) 
     : IRequestHandler<AddImageCommand, Result<AddImageResponse>>
 {
-
-    public static readonly string ThumbnailExtensions = "image/png";
 
     public async Task<Result<AddImageResponse>> Handle(AddImageCommand request, CancellationToken cancellationToken)
     {
@@ -70,7 +69,7 @@ public class AddImageHandler(IImageRepository repository,
             if (status < 1)
             {
                 transaction.Rollback();
-                var error = AddImageErrors.TransactionFailed;
+                var error = AddImageErrors.TransactionFailed("Image could not be saved.");
                 return Result<AddImageResponse>.Failure(error);
             }
 
@@ -81,7 +80,7 @@ public class AddImageHandler(IImageRepository repository,
                 Image = image,
                 ProcessingStatus = ProcessingStatus.NotStarted,
                 Bytes = [],
-                FileExtension = ThumbnailExtensions,
+                FileExtension = ThumbnailExtensions.ThumbnailExtension,
                 CreatedOnUtc = DateTime.UtcNow,
                 EditedAtUtc = DateTime.UtcNow
             };
@@ -91,18 +90,22 @@ public class AddImageHandler(IImageRepository repository,
             if (thumbnailStatus < 1)
             {
                 transaction.Rollback();
-                var error = AddImageErrors.TransactionFailed;
+                var error = AddImageErrors.TransactionFailed("Thumbnail could not be saved.");
                 return Result<AddImageResponse>.Failure(error);
             }
 
             transaction.Commit();
 
-            return Result<AddImageResponse>.Success(new(image.Id, thumbnail.Id));
+            await eventBus.Publish(new AddImageEvent(thumbnail.Id, image.ImageStoreKey), cancellationToken);
+
+            var response = new AddImageResponse(image.Id, thumbnail.Id);
+
+            return Result<AddImageResponse>.Success(response);
         }
-        catch (Exception)
+        catch (Exception e)
         {
             transaction.Rollback();
-            var error = AddImageErrors.TransactionFailed;
+            var error = AddImageErrors.TransactionFailed(e.Message);
             return Result<AddImageResponse>.Failure(error);
         }
     }

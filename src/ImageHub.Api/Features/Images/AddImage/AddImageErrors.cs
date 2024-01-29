@@ -2,8 +2,8 @@
 
 public class AddImageErrors
 {
-    public static Error TransactionFailed 
-        => Error.ServerError("Image.Add.Save");
+    public static Error TransactionFailed(string message)
+        => Error.ServerError("Image.Add.Save", message);
 
     public static Error ValidationFailed(FluentValidation.Results.ValidationResult result)
         => Error.Validation("Image.Add.Validation", result.ToString());

@@ -7,7 +7,7 @@ public class ImageDto
     [JsonPropertyName("id")]
     public string Id { get; set; } = string.Empty;
     [JsonPropertyName("packId")]
-    public string? PackId { get; set; } = string.Empty;
+    public string? PackId { get; set; } = default!;
     [JsonPropertyName("fileType")]
     public string FileType { get; set; } = string.Empty;
 

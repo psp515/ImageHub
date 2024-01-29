@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ImageHub.Api.Abstractions.Results;
 
-namespace ImageHub.Api.Behaviors;
+namespace ImageHub.Api.Infrastructure.Behaviors;
 
 public class ValidationBehaviour<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators,
@@ -47,10 +47,10 @@ public class ValidationBehaviour<TRequest, TResponse>(
         return await next();
     }
 
-    public static TResult CreateValidationResult<TResult>(Error[] errors) 
+    public static TResult CreateValidationResult<TResult>(Error[] errors)
         where TResult : Result
     {
-        if(typeof(TResult) == typeof(Result))
+        if (typeof(TResult) == typeof(Result))
         {
             return (ValidationResult.WithErrors(errors) as TResult)!;
         }
@@ -61,6 +61,6 @@ public class ValidationBehaviour<TRequest, TResponse>(
             .GetMethod(nameof(ValidationResult.WithErrors))!
             .Invoke(null, [errors])!;
 
-        return (TResult) validationResult;
+        return (TResult)validationResult;
     }
 }

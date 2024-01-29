@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Testcontainers.PostgreSql;
 
 namespace ImageHub.Api.Tests;
@@ -14,7 +13,6 @@ public class PostgreSqlContainerFixture : IAsyncLifetime
     {
         var builder = new PostgreSqlBuilder()
                     .WithPortBinding(5432, true)
-                    
                     .WithImage("postgres:latest")
                     .WithDatabase("imagehub-db")
                     .WithCleanUp(true);
