@@ -69,7 +69,7 @@ public class AddImageHandler(IImageRepository repository,
             if (status < 1)
             {
                 transaction.Rollback();
-                var error = AddImageErrors.TransactionFailed;
+                var error = AddImageErrors.TransactionFailed("Image could not be saved.");
                 return Result<AddImageResponse>.Failure(error);
             }
 
@@ -90,7 +90,7 @@ public class AddImageHandler(IImageRepository repository,
             if (thumbnailStatus < 1)
             {
                 transaction.Rollback();
-                var error = AddImageErrors.TransactionFailed;
+                var error = AddImageErrors.TransactionFailed("Thumbnail could not be saved.");
                 return Result<AddImageResponse>.Failure(error);
             }
 
@@ -103,7 +103,7 @@ public class AddImageHandler(IImageRepository repository,
         catch (Exception e)
         {
             transaction.Rollback();
-            var error = AddImageErrors.TransactionFailed;
+            var error = AddImageErrors.TransactionFailed(e.Message);
             return Result<AddImageResponse>.Failure(error);
         }
     }
