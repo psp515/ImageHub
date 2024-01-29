@@ -98,7 +98,9 @@ public class AddImageHandler(IImageRepository repository,
 
             await eventBus.Publish(new AddImageEvent(thumbnail.Id, image.ImageStoreKey), cancellationToken);
 
-            return Result<AddImageResponse>.Success(new(image.Id, thumbnail.Id));
+            var response = new AddImageResponse(image.Id, thumbnail.Id);
+
+            return Result<AddImageResponse>.Success(response);
         }
         catch (Exception e)
         {

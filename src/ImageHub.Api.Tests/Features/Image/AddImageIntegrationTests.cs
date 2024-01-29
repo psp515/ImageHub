@@ -1,6 +1,8 @@
-﻿using ImageHub.Api.Entities;
+﻿using ImageHub.Api.Contracts.ImagePacks.AddImagePack;
+using ImageHub.Api.Entities;
 using ImageHub.Api.Features.Images.AddImage;
 using ImageHub.Api.Features.Thumbnails;
+using ImageHub.Api.Tests.Features.Image.Models;
 using ImageHub.Api.Tests.Features.Thumbnails.Models;
 using ImageHub.Api.Tests.Shared.Responses;
 using MassTransit.Testing;
@@ -48,6 +50,60 @@ public class AddImageIntegrationTests(IntegrationTestWebAppFactory factory) : Ba
 
         //Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddPngToImagePack()
+    {
+        //Arrange
+        var formContent = await GetPng();
+        var request = new AddImagePackRequest()
+        {
+            Name = $"Test {Guid.NewGuid()}",
+            Description = "Test Image Pack Description."
+        };
+        var content = TestsCommon.Serialize(request);
+
+        //Act
+        var packResponse = await _client.PostAsync("/api/imagepacks", content);
+        var packId = await TestsCommon.Deserialize<IdResponse>(packResponse);
+        var response = await _client.PostAsync($"/api/images?pack={packId.Id}", formContent);
+        var ids = await TestsCommon.Deserialize<AddImageResponse>(response);
+        var location = response.Headers.Location;
+        var getResponse = await _client.GetAsync(location);
+        var image = await TestsCommon.Deserialize<ImageDto>(getResponse);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.Created, packResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
+        Assert.Equal(packId.Id.ToString(), image.PackId);
+        Assert.Equal($"api/images/{ids.Id}", location!.ToString());
+    }
+
+    [Fact]
+    public async Task AddPngToImagePackIgnoreInvalidGuid()
+    {
+        //Arrange
+        var formContent = await GetPng();
+        var request = new AddImagePackRequest()
+        {
+            Name = $"Test {Guid.NewGuid()}",
+            Description = "Test Image Pack Description."
+        };
+        var content = TestsCommon.Serialize(request);
+
+        //Act
+        var packResponse = await _client.PostAsync("/api/imagepacks", content);
+        var response = await _client.PostAsync($"/api/images?pack={345345}", formContent);
+        var id = await TestsCommon.Deserialize<AddImageResponse>(packResponse);
+        var getResponse = await _client.GetAsync($"/api/images/{id.Id}");
+        var image = await TestsCommon.Deserialize<ImageDto>(getResponse);
+
+        //Assert
+        Assert.Equal(HttpStatusCode.Created, packResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Null(image.PackId);
     }
 
     [Fact]
