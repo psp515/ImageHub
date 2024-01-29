@@ -14,10 +14,10 @@ COPY ["src/ImageHub.Api/ImageHub.Api.csproj", "src/ImageHub.Api/"]
 RUN dotnet restore "src/ImageHub.Api/ImageHub.Api.csproj"
 COPY . .
 WORKDIR "/src/src/ImageHub.Api"
-RUN dotnet build "ImageHub.Api.csproj" -c Release -o /app/build
+RUN dotnet build "ImageHub.Api.csproj" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ImageHub.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ImageHub.Api.csproj" -c Debug -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
