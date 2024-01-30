@@ -7,6 +7,9 @@ services:
     build:
       context: .
       dockerfile: src\ImageHub.Api\Dockerfile
+    ports:
+     - "5000:5000"
+     - "5001:5001"
     depends_on:
       imagehub.database:
         condition: service_healthy
@@ -15,16 +18,22 @@ services:
         condition: service_healthy
         restart: true
   imagehub.database:
-    image: postgres:latest
+    image: postgres:15
+    restart: always
     container_name: Database
     environment:
       - POSTGRES_DB=imagehub-db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/database:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "mydatabase", "-U", "myuser"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
   imagehub.rabbitmq:
     image: rabbitmq:3-management
     container_name: Queue
@@ -33,8 +42,20 @@ services:
       - 15672:15672
       - 5672:5672
     volumes:
-      - ./.containers/rabbitmq/data:/var/lib/rabbitmq
-      - ./.containers/rabbitmq/log:/var/log/rabbitmq
+      - rabbitmqdata:/var/lib/rabbitmq
+      - rabbitmqlog:/var/log/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+volumes:
+  rabbitmqdata:
+    driver: local
+  rabbitmqlog:
+    driver: local
+  postgres:
+    driver: local

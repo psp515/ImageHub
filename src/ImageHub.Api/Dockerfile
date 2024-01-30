@@ -5,8 +5,8 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
+EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
@@ -14,10 +14,10 @@ COPY ["src/ImageHub.Api/ImageHub.Api.csproj", "src/ImageHub.Api/"]
 RUN dotnet restore "src/ImageHub.Api/ImageHub.Api.csproj"
 COPY . .
 WORKDIR "/src/src/ImageHub.Api"
-RUN dotnet build "ImageHub.Api.csproj" -c Release -o /app/build
+RUN dotnet build "ImageHub.Api.csproj" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ImageHub.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ImageHub.Api.csproj" -c Debug -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
