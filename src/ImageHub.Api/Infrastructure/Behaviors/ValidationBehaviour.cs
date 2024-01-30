@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using ImageHub.Api.Abstractions.Results;
 
 namespace ImageHub.Api.Infrastructure.Behaviors;
 
-public class ValidationBehaviour<TRequest, TResponse>(
+internal sealed class ValidationBehaviour<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators,
     ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
