@@ -2,6 +2,7 @@
 using ImageHub.Api.Features.Images.AddImage;
 using ImageHub.Api.Infrastructure.Behaviors;
 using ImageHub.Api.Infrastructure.MessageBroker;
+using ImageHub.Api.Infrastructure.Middlewares;
 using ImageHub.Api.Infrastructure.Persistence;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ public static class InfrastructureExtnesions
         builder.Services.AddValidatorsFromAssembly(assembly);
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddTransient<TimingMiddleware>();
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
         builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
@@ -76,11 +78,16 @@ public static class InfrastructureExtnesions
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        else
+        {
+            app.UseHttpsRedirection();
+        }
 
-        app.UseHttpsRedirection();
+        app.UseMiddleware<TimingMiddleware>();
         app.UseExceptionHandler();
         app.UseRouting();
         app.MapCarter();
+
         return app;
     }
 }
