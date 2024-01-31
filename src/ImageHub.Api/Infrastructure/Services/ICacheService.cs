@@ -2,10 +2,11 @@
 
 public interface ICacheService
 {
-    Task<T> GetOrCreateAsync<T>(string key,
-        Func<CancellationToken, Task<T>> factory,
-        TimeSpan? expiration = null,
-        CancellationToken cancellationToken = default);
+    Task<T?> Get<T>(string cacheKey, CancellationToken cancellationToken = default)
+        where T : class;
+    Task Set<T>(string cacheKey, T data, TimeSpan expiration, CancellationToken cancellationToken = default)
+        where T : class;
 
-    Task ExpireKey<T>(string key);
+    Task ExpireKey(string key, CancellationToken cancellationToken = default);
+    Task ExpireKeysByPrefix(string prefix, CancellationToken cancellationToken = default);
 }

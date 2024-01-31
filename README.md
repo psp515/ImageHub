@@ -61,3 +61,9 @@ TBA:
 - VSA Conclusions
 - SignalR Conclusions
 - Pros and Cons of Monolithic solution
+- notes about CQRS
+- notes about multiple options of implementing caching
+- CSRF token
+- MediatoR
+- Serilog
+- TestContainers

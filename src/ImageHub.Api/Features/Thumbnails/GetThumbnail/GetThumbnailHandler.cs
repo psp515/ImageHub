@@ -1,12 +1,22 @@
 ﻿using ImageHub.Api.Contracts.Thumbnails.GetThumbnail;
-using System.Buffers.Text;
+using ImageHub.Api.Infrastructure.Services;
 
 namespace ImageHub.Api.Features.Thumbnails.GetThumbnail;
 
-public class GetThumbnailHandler(IThumbnailRepository repository) : IRequestHandler<GetThumbnailQuery, Result<GetThumbnailResponse>>
+public class GetThumbnailHandler(IThumbnailRepository repository, ICacheService cacheService) 
+    : IRequestHandler<GetThumbnailQuery, Result<GetThumbnailResponse>>
 {
     public async Task<Result<GetThumbnailResponse>> Handle(GetThumbnailQuery request, CancellationToken cancellationToken)
     {
+        var cacheKey = $"thumbnail-{request.Id}";
+
+        var cachedThumbnail = await cacheService.Get<GetThumbnailResponse>(cacheKey, cancellationToken);
+
+        if (cachedThumbnail is not null)
+        {
+            return Result<GetThumbnailResponse>.Success(cachedThumbnail);
+        }
+
         var thumbnail = await repository.GetThumbnail(request.Id, cancellationToken);
 
         if(thumbnail is null)
@@ -14,8 +24,6 @@ public class GetThumbnailHandler(IThumbnailRepository repository) : IRequestHand
             var error = GetThumbnailErrors.NotFound;
             return Result<GetThumbnailResponse>.Failure(error);
         }
-
-
 
         var response = new GetThumbnailResponse
         {
@@ -28,6 +36,8 @@ public class GetThumbnailHandler(IThumbnailRepository repository) : IRequestHand
             CreatedOnUtc = thumbnail.CreatedOnUtc,
             EditedAtUtc = thumbnail.EditedAtUtc
         };
+
+        await cacheService.Set(cacheKey, response, TimeSpan.FromMinutes(5), cancellationToken);
 
         return Result<GetThumbnailResponse>.Success(response);
     }
