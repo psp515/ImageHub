@@ -1,6 +1,6 @@
 ﻿namespace ImageHub.Api.Infrastructure.Behaviors;
 
-public class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
+internal sealed class LoggingBehaviour<TRequest, TResponse>(ILogger<IPipelineBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : Result

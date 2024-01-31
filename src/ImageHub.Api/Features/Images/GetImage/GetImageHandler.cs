@@ -1,12 +1,23 @@
 ﻿using ImageHub.Api.Contracts.Image.GetImage;
 using ImageHub.Api.Features.Images.Repositories;
+using ImageHub.Api.Infrastructure.Services;
 
 namespace ImageHub.Api.Features.Images.GetImage;
 
-public class GetImageHandler(IImageRepository imageRepository) : IRequestHandler<GetImageQuery, Result<GetImageResponse>>
+public class GetImageHandler(IImageRepository imageRepository, ICacheService cacheService) 
+    : IRequestHandler<GetImageQuery, Result<GetImageResponse>>
 {
     public async Task<Result<GetImageResponse>> Handle(GetImageQuery request, CancellationToken cancellationToken)
     {
+        var cacheKey = $"thumbnail-{request.Id}";
+
+        var cachedImage = await cacheService.Get<GetImageResponse>(cacheKey, cancellationToken);
+
+        if (cachedImage is not null)
+        {
+            return Result<GetImageResponse>.Success(cachedImage);
+        }
+
         var image = await imageRepository.GetImageById(request.Id, cancellationToken);
 
         if (image is null)
@@ -25,6 +36,8 @@ public class GetImageHandler(IImageRepository imageRepository) : IRequestHandler
             CreatedOnUtc = image.CreatedOnUtc,
             EditedAtUtc = image.EditedAtUtc
         };
+
+        await cacheService.Set(cacheKey, response, TimeSpan.FromMinutes(5), cancellationToken);
 
         return Result<GetImageResponse>.Success(response);
     }

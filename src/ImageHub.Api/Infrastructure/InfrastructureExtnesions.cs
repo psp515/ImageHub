@@ -4,6 +4,7 @@ using ImageHub.Api.Infrastructure.Behaviors;
 using ImageHub.Api.Infrastructure.MessageBroker;
 using ImageHub.Api.Infrastructure.Middlewares;
 using ImageHub.Api.Infrastructure.Persistence;
+using ImageHub.Api.Infrastructure.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,9 @@ public static class InfrastructureExtnesions
 
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddTransient<TimingMiddleware>();
+
+        builder.Services.AddDistributedMemoryCache(); //TODO: configure for redis
+        builder.Services.AddSingleton<ICacheService, CacheService>();
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
         builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
