@@ -1,4 +1,5 @@
-﻿using ImageHub.Api.Features.Thumbnails;
+﻿using ImageHub.Api.Entities;
+using ImageHub.Api.Features.Thumbnails;
 using ImageHub.Api.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,28 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
     {
         dbContext.Add(thumbnail);
         return await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<Thumbnail?> GetNotStartedProcessingThumbnail(TimeSpan notStartedProcessing, CancellationToken cancellationToken)
+    {
+        var thumbnails = await dbContext.Thumbnails
+                .Where(x => x.ProcessingStatus == ProcessingStatus.NotStarted && (DateTime.UtcNow - x.EditedAtUtc) > notStartedProcessing)
+                .OrderBy(x => x.EditedAtUtc)
+                .Take(1)
+                .ToListAsync();
+
+        return thumbnails.FirstOrDefault();
+    }
+
+    public async Task<Thumbnail?> GetOldestBlockedThumbnail(TimeSpan buggedFor, CancellationToken cancellationToken)
+    {
+        var thumbnails = await dbContext.Thumbnails
+                .Where(x => x.ProcessingStatus == ProcessingStatus.Processing && (DateTime.UtcNow - x.EditedAtUtc) > buggedFor)
+                .OrderBy(x => x.EditedAtUtc)
+                .Take(1)
+                .ToListAsync();
+
+        return thumbnails.FirstOrDefault();
     }
 
     public async Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken)
@@ -62,4 +85,5 @@ public class ThumbnailRepository(ApplicationDbContext dbContext) : IThumbnailRep
 
         return await dbContext.SaveChangesAsync();
     }
+
 }
