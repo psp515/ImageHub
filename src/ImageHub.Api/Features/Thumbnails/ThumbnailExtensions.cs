@@ -1,4 +1,5 @@
-﻿using ImageHub.Api.Infrastructure.Repositories;
+﻿using ImageHub.Api.Features.Thumbnails.Hubs;
+using ImageHub.Api.Infrastructure.Repositories;
 
 namespace ImageHub.Api.Features.Thumbnails;
 
@@ -13,5 +14,13 @@ public static class ThumbnailExtensions
     {
         builder.Services.AddScoped<IThumbnailRepository, ThumbnailRepository>();
         return builder;
+    }
+
+    public static WebApplication UseThumbnail(this WebApplication app)
+    {
+        app.MapHub<ThumbnailHub>("/thumbnailsHub")
+            .WithTags(Name);
+
+        return app;
     }
 }

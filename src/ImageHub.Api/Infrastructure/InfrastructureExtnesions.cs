@@ -74,6 +74,8 @@ public static class InfrastructureExtnesions
         });
         builder.Services.AddTransient<IEventBus, EventBus>();
 
+        builder.Services.AddSignalR();
+
         return builder;
     }
 

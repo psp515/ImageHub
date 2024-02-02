@@ -1,6 +1,8 @@
 ﻿using ImageHub.Api.Features.Images.Repositories;
 using ImageHub.Api.Features.Thumbnails;
+using ImageHub.Api.Features.Thumbnails.Hubs;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using SkiaSharp;
 
 namespace ImageHub.Api.Features.Images.AddImage;
@@ -8,7 +10,8 @@ namespace ImageHub.Api.Features.Images.AddImage;
 public sealed class AddImageEventConsumer(
     IImageStoreRepository imageStoreRepository,
     IThumbnailRepository thumbnailRepository,
-    ILogger<AddImageEventConsumer> logger)
+    ILogger<AddImageEventConsumer> logger,
+    IHubContext<ThumbnailHub, IThumbnailHub> hubContext)
     : IConsumer<AddImageEvent>
 {
     public async Task Consume(ConsumeContext<AddImageEvent> context)
@@ -34,19 +37,28 @@ public sealed class AddImageEventConsumer(
                                        typeof(AddImageEvent).Name,
                                        DateTime.UtcNow,
                                        addEvent.ThumbnailId);
+
+                await thumbnailRepository.ThumbanailProcessingFailed(addEvent.ThumbnailId);
+
+                await hubContext.Clients.All
+                    .ThumbnailProcessed(addEvent.ThumbnailId.ToString(), ProcessingStatus.Failure);
+
                 return;
             }
 
             using var imageStream = new MemoryStream(image);
             var thumbnailBytes = CreateThumbnail(image);
 
+            logger.LogInformation("Event Type: {@RequestName}, Time: {@DateTimeUtc}, ThumbnailId {id}, Processing succeded.",
+                       typeof(AddImageEvent).Name,
+                       DateTime.UtcNow,
+                       addEvent.ThumbnailId);
+
             await thumbnailRepository
                 .ThumbanailProcessed(addEvent.ThumbnailId, thumbnailBytes);
 
-            logger.LogInformation("Event Type: {@RequestName}, Time: {@DateTimeUtc}, ThumbnailId {id}, Processing succeded.",
-                                   typeof(AddImageEvent).Name,
-                                   DateTime.UtcNow,
-                                   addEvent.ThumbnailId);
+            await hubContext.Clients.All
+                .ThumbnailProcessed(addEvent.ThumbnailId.ToString(), ProcessingStatus.Success);
         }
         catch (Exception e)
         {
@@ -58,6 +70,9 @@ public sealed class AddImageEventConsumer(
 
             await thumbnailRepository
                 .ThumbanailProcessingFailed(addEvent.ThumbnailId);
+
+            await hubContext.Clients.All
+                .ThumbnailProcessed(addEvent.ThumbnailId.ToString(), ProcessingStatus.Failure);
         }
     }
 

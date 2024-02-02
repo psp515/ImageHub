@@ -6,6 +6,7 @@ using ImageHub.Api.Tests.Features.Image.Models;
 using ImageHub.Api.Tests.Features.Thumbnails.Models;
 using ImageHub.Api.Tests.Shared.Responses;
 using MassTransit.Testing;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
@@ -24,6 +25,47 @@ public class AddImageIntegrationTests(IntegrationTestWebAppFactory factory) : Ba
 
         //Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task AddPngNotifiesIfThumbanilIsProcessed()
+    {
+        //Arrange
+        var formContent = await GetPng();
+        var connection = new HubConnectionBuilder()
+            .WithUrl($"ws://localhost/thumbnailsHub",
+                     o => o.HttpMessageHandlerFactory = _ => _handler)
+            .Build();
+
+        bool received = false;
+        ProcessingStatus processingStatus = ProcessingStatus.NotStarted;
+
+        connection.On<string, ProcessingStatus>("ThumbnailProcessed", (id, status) =>
+        {
+            processingStatus = status;
+            received = true;
+        });
+
+        try
+        {
+            await connection.StartAsync();
+        }
+        catch (Exception e)
+        {
+            processingStatus = ProcessingStatus.NotStarted;
+        }
+
+        //Act
+        var response = await _client.PostAsync("/api/images", formContent);
+
+        for(int i = 0; i < 100 && !received; i++)
+        {
+            await Task.Delay(100);
+        }
+
+        //Assert
+        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(ProcessingStatus.Success, processingStatus);
     }
 
     [Fact]
