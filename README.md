@@ -57,13 +57,50 @@ Project aim is not to create personal accounts.
 
 ### Project Conclusions
 
-TBA:
-- VSA Conclusions
-- SignalR Conclusions
-- Pros and Cons of Monolithic solution
-- notes about CQRS
-- notes about multiple options of implementing caching
-- CSRF token
-- MediatoR
-- Serilog
-- TestContainers
+#### Vertical Slice Architecture
+
+I have to admit that VSA is really usefull when it comes to small projects.
+ 
+
+Usefull Resources:
+- [Vertical Slice by Milan Jovanović](https://www.milanjovanovic.tech/blog/vertical-slice-architecture)
+
+#### SignalR
+
+Usefull Resources:
+- [Backend Communication Examples by kova98](https://github.com/kova98/BackendCommunicationPatterns.NET?fbclid=IwAR32fMvYalIR55mac3CgMjAaUPl7GqMBn3_ZAHi5gmxkoQypg9hMoKodRcs)
+
+#### Monolith
+
+Usefull Resources:
+- []()
+
+#### CQRS
+
+Usefull Resources:
+- []()
+
+#### Cache
+
+Usefull Resources:
+- []()
+
+#### CSRF
+
+Usefull Resources:
+- []()
+
+#### Mediator
+
+Usefull Resources:
+- []()
+
+#### Serilog
+
+Usefull Resources:
+- []()
+
+#### TestContainers
+
+Usefull Resources:
+- []()
