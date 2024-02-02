@@ -9,4 +9,7 @@ public interface IThumbnailRepository
     Task<int> AddThumbnailBasedOnImage(Thumbnail thumbnail, CancellationToken cancellationToken);
     Task<List<Thumbnail>> GetThumbnails(Guid? imagePackId,int page, int size, CancellationToken cancellationToken);
     Task<Thumbnail?> GetThumbnail(Guid id, CancellationToken cancellationToken);
+
+    Task<Thumbnail?> GetOldestBlockedThumbnail(TimeSpan buggedFor, CancellationToken cancellationToken);
+    Task<Thumbnail?> GetNotStartedProcessingThumbnail(TimeSpan notStartedProcessing, CancellationToken cancellationToken);
 }

@@ -4,6 +4,7 @@ using ImageHub.Api.Features.Security;
 using ImageHub.Api.Features.Thumbnails;
 using ImageHub.Api.Infrastructure;
 using ImageHub.Api.Infrastructure.Persistence;
+using ImageHub.Api.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args)
     .RegisterInfrastructureServices()
