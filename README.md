@@ -55,52 +55,68 @@ Project secondary goal is to get familiar with usefull nuget packages like Media
 
 Project aim is not to create personal accounts.
 
+### How to run project
+
+#### Development Environment
+In order to run this api you need to start required services like postgres and rabbitmq. To do that run:
+- ```docker compose up -d``` (you can remove api container)
+- then migrate database for example from Visual Studio
+- now you run it in visial studio
+
 ### Project Conclusions
 
 #### Vertical Slice Architecture
 
-I have to admit that VSA is really usefull when it comes to small projects.
- 
+Vertical Slice Architecture (VSA) in handling small-scale projects is great. The convenience of having all crucial classes neatly organized within a single folder greatly streamlines the code and test development process. It's a notable advantage that simplifies navigation and enhances overall project management.
+
+However, as projects expand in scope, the potential emergence of cross-cutting concerns poses a challenge. The sheer growth in the Infrastructure folder may lead to a mix of elements from various features, potentially diminishing the initial organizational benefits. In such cases, careful consideration and perhaps a more scalable architecture may be necessary to maintain the project's clarity and efficiency.
 
 Usefull Resources:
 - [Vertical Slice by Milan Jovanović](https://www.milanjovanovic.tech/blog/vertical-slice-architecture)
+- [Vertical Slice discussion](https://www.linkedin.com/posts/davidcallan_dotnet-softwarengineering-cleanarchitecture-activity-7157374290630205440-zOMb/)
 
 #### SignalR
 
+SignalR configuration is easy and intuitive. Worth noting is that SignalR uses websockets.
+It is great when we want to notify user that something just happend and applications can respond to that.
+
 Usefull Resources:
 - [Backend Communication Examples by kova98](https://github.com/kova98/BackendCommunicationPatterns.NET?fbclid=IwAR32fMvYalIR55mac3CgMjAaUPl7GqMBn3_ZAHi5gmxkoQypg9hMoKodRcs)
-
-#### Monolith
-
-Usefull Resources:
-- []()
+- [Real-Time Notifications with SignalR by Milan Jovanović](https://www.youtube.com/watch?v=O7oaxFgNuYo&t=429s)
 
 #### CQRS
 
-Usefull Resources:
-- []()
+CQRS stands for Command and Query Responsibility Segregation, a pattern that aims to separate read and update operations for a data store. 
+We can implement it on single database and also on separate read / write databases (in this solution I use single database). 
 
-#### Cache
+In combination with MediatR it gives us nice way of divisin into tasks like:
+- Handlers - Here is main domain logic
+- Queries - we are passing this data in order to retrive information from database (just getting data)
+- Commands - commands have different task than queries they are responsible for updating, removing and adding new objects.
 
-Usefull Resources:
-- []()
-
-#### CSRF
-
-Usefull Resources:
-- []()
-
-#### Mediator
+With splitting into separate databases this combination gives us improved performance because read database can focus on retriving data and write database can focus on longer actions when we are saving data to database.
 
 Usefull Resources:
-- []()
+- [Microsoft Documentation](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs)
+- [CQRS + MediatR by Milan Jovanović](https://www.youtube.com/watch?v=vdi-p9StmG0&t=1017s)
+
+#### Mediator Pattern
+
+MediatR is really nice implementation of Mediator Pattern. I find Pipelines really usfull. Thanks to them we can simplify Handlers by pulling out validation to single file common for all features. Also it allows to nicely struct the project and makes it more clear which elements are responsible for what.
+
+Usefull Resources:
+- [MediatR Repo](https://github.com/jbogard/MediatR)
 
 #### Serilog
 
-Usefull Resources:
-- []()
-
-#### TestContainers
+Serilog as a logging library is really nice it is easy to use. However we need to remember of preparing appropriate configuration for logging. Also worth noting is that it fits nicely with MediatR pipeline behaviors.
 
 Usefull Resources:
-- []()
+- [Logging as a Cross-Cutting Concern with MediatR by Milan Jovanović](https://www.youtube.com/watch?v=JVX9MMpO6pE)
+
+#### Test Containers
+
+Test Containers are great for testing purposes. Combining it with xunit makes teststing easy even in CI/CD pipeline and thanks to that we can test real behavior on actual database like PostgreSQL. Key to note is that configuration is really important in order to use proper containers (when I started with test containers my tests were using my postgres database and not database created just for testing purposes the result of that was tests didn't work in Github Actions and I spent a lot of time figuring what is the problem).
+
+Usefull Resources:
+- [The Best Way To Use Docker For Integration Testing In .NET by Milan Jovanović](https://www.youtube.com/watch?v=tj5ZCtvgXKY&t=445s)s
